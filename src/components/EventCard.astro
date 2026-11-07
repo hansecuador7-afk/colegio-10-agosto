@@ -1,0 +1,56 @@
+---
+import Icon from './Icon.astro';
+import type { Evento } from '../lib/eventos';
+import { eventHref, formatLongDate, getDateBadge } from '../lib/eventos';
+
+interface Props {
+  evento: Evento;
+  delay?: number;
+}
+
+const { evento, delay = 0 } = Astro.props;
+const href = eventHref(evento);
+const badge = getDateBadge(evento.data.date);
+const longDate = formatLongDate(evento.data.date);
+---
+
+<article
+  class="card-lift group flex h-full flex-col overflow-hidden rounded-3xl border border-stone-200/80 bg-white shadow-sm shadow-stone-900/5"
+  data-reveal
+  style={`--reveal-delay: ${delay}ms`}
+>
+  <a href={href} class="photo-frame relative block aspect-[16/10]" aria-label={`Ver evento: ${evento.data.title}`}>
+    <img
+      src={evento.data.image}
+      alt={`Imagen del evento ${evento.data.title}`}
+      loading="lazy"
+      decoding="async"
+      class="h-full w-full object-cover"
+    />
+    <span class="absolute left-4 top-4 flex min-w-14 flex-col items-center rounded-2xl bg-white/95 px-3 py-2 text-center shadow-lg shadow-stone-950/10 backdrop-blur">
+      <span class="font-display text-xl font-semibold leading-none text-brand-700">{badge.day}</span>
+      <span class="mt-1 text-[9px] font-extrabold uppercase tracking-[0.16em] text-stone-500">{badge.month}</span>
+    </span>
+  </a>
+
+  <div class="flex flex-1 flex-col p-5 sm:p-6">
+    <p class="flex items-center gap-2 text-[11px] font-extrabold uppercase tracking-wide text-brand-700">
+      <Icon name="calendar" class="h-3.5 w-3.5" />
+      {longDate}
+    </p>
+    <h3 class="mt-3 text-xl leading-tight sm:text-2xl">
+      <a href={href} class="transition-colors hover:text-brand-700">{evento.data.title}</a>
+    </h3>
+    <p class="mt-3 line-clamp-3 text-sm leading-relaxed text-stone-500">
+      {evento.data.description}
+    </p>
+    <a
+      href={href}
+      class="mt-5 inline-flex items-center gap-2 text-sm font-extrabold text-brand-700 transition-colors hover:text-brand-900"
+    >
+      Conocer más
+      <Icon name="arrow-right" class="h-4 w-4 transition-transform group-hover:translate-x-1" />
+      <span class="sr-only">sobre {evento.data.title}</span>
+    </a>
+  </div>
+</article>

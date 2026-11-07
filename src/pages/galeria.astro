@@ -1,0 +1,69 @@
+---
+import MainLayout from '../layouts/MainLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import SectionHeading from '../components/SectionHeading.astro';
+import PhotoGallery from '../components/PhotoGallery.astro';
+import Icon from '../components/Icon.astro';
+import CtaBand from '../components/CtaBand.astro';
+import { photos } from '../data/photos';
+---
+
+<MainLayout
+  title="Galería"
+  description="Fotografías de la vida escolar, la cultura, las ceremonias y el deporte en la Unidad Educativa Fiscomisional 10 de Agosto."
+>
+  <PageHero
+    eyebrow="Galería"
+    breadcrumb="Galería"
+    title="Momentos que permanecen"
+    description="Una mirada a la vida de nuestra comunidad: tradiciones, aprendizajes, celebraciones y el día a día del colegio."
+    image="/assets/fotos/IMG_5036.jpg"
+    imageAlt="Estudiantes y docentes con trajes tradicionales durante una actividad cultural"
+  />
+
+  <section class="bg-white py-16 sm:py-20 lg:py-24">
+    <div class="container-site">
+      <div class="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+        <SectionHeading
+          eyebrow="Nuestra memoria visual"
+          title="Así se vive el 10 de Agosto"
+          description="Explora las fotografías por categoría y ábrelas para verlas en detalle."
+        />
+        <p class="shrink-0 text-sm font-semibold text-stone-400">
+          <span class="font-display text-3xl font-semibold text-brand-700">{photos.length}</span>
+          <span class="ml-2 inline-block max-w-[7rem] text-[10px] font-extrabold uppercase leading-tight tracking-[0.12em]">
+            momentos para recordar
+          </span>
+        </p>
+      </div>
+
+      <div class="mt-10">
+        <PhotoGallery photos={photos} />
+      </div>
+
+      <div class="mt-10 flex flex-col gap-4 rounded-3xl border border-stone-200 bg-cream p-6 sm:flex-row sm:items-center sm:justify-between sm:p-7" data-reveal>
+        <div class="flex items-start gap-3">
+          <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white text-brand-700 shadow-sm">
+            <span class="font-display text-lg font-semibold">“</span>
+          </span>
+          <p class="max-w-2xl text-sm leading-relaxed text-stone-600">
+            Cada fotografía guarda una parte de nuestra historia: el esfuerzo de nuestros estudiantes, la vocación de nuestros docentes y el acompañamiento de las familias.
+          </p>
+        </div>
+        <a href="/nosotros" class="group inline-flex shrink-0 items-center gap-2 text-sm font-extrabold text-brand-700 transition hover:text-brand-900">
+          Conoce nuestra historia
+          <Icon name="arrow-right" class="h-4 w-4 transition-transform group-hover:translate-x-1" />
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <CtaBand
+    title="La historia sigue sembrándose cada día."
+    description="Descubre los niveles académicos que acompañan a nuestras y nuestros estudiantes."
+    primaryLabel="Oferta académica"
+    primaryHref="/oferta"
+    secondaryLabel="Próximos eventos"
+    secondaryHref="/eventos"
+  />
+</MainLayout>

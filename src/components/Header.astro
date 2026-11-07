@@ -1,0 +1,256 @@
+---
+import Icon from './Icon.astro';
+import { navigation, site } from '../data/site';
+
+const currentPath = Astro.url.pathname.replace(/\/+$/, '') || '/';
+
+const isActive = (href: string) => {
+  if (href === '/') return currentPath === '/';
+  return currentPath === href || currentPath.startsWith(`${href}/`);
+};
+---
+
+<header class="sticky top-0 z-50">
+  <div class="bg-brand-900 text-white">
+    <div class="container-site flex min-h-9 items-center justify-between gap-4 py-1.5 text-[10px] font-semibold sm:text-[11px]">
+      <p class="flex items-center gap-1.5 text-white/85">
+        <Icon name="map-pin" class="h-3.5 w-3.5 shrink-0 text-sun-300" />
+        <span>{site.location}</span>
+      </p>
+      <div class="flex items-center gap-2">
+        <span class="hidden text-white/60 sm:inline">Síguenos</span>
+        <a
+          href={site.facebook}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-flex h-6 w-6 items-center justify-center rounded-full text-white/80 transition hover:bg-white/10 hover:text-white"
+          aria-label="Facebook oficial de la Unidad Educativa 10 de Agosto"
+        >
+          <Icon name="facebook" class="h-3.5 w-3.5" />
+        </a>
+        <a
+          href={site.tiktok}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-flex h-6 w-6 items-center justify-center rounded-full text-white/80 transition hover:bg-white/10 hover:text-white"
+          aria-label="TikTok oficial de la Unidad Educativa 10 de Agosto"
+        >
+          <Icon name="tiktok" class="h-3.5 w-3.5" />
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <div class="border-b border-stone-200/80 bg-white/95 shadow-sm shadow-stone-900/5 backdrop-blur">
+    <div class="container-site flex h-[4.7rem] items-center justify-between gap-5 sm:h-20">
+      <a href="/" class="group flex min-w-0 items-center gap-2.5 sm:gap-3" aria-label={`${site.name} — Inicio`}>
+        <img
+          src="/assets/logo.png"
+          alt="Escudo de la Unidad Educativa Fiscomisional 10 de Agosto"
+          width="56"
+          height="56"
+          class="h-11 w-11 shrink-0 object-contain transition-transform duration-300 group-hover:scale-105 sm:h-12 sm:w-12"
+        />
+        <span class="min-w-0 leading-none">
+          <span class="block truncate text-[8.5px] font-extrabold uppercase tracking-[0.14em] text-brand-700 sm:text-[9.5px]">
+            Unidad Educativa Fiscomisional
+          </span>
+          <span class="mt-1 block font-display text-lg font-semibold leading-none text-stone-900 sm:text-xl">
+            10 de Agosto
+          </span>
+          <span class="mt-1 block text-[9px] font-semibold italic tracking-wide text-stone-400 sm:text-[10px]">
+            {site.motto}
+          </span>
+        </span>
+      </a>
+
+      <nav class="hidden items-center gap-0.5 xl:flex" aria-label="Navegación principal">
+        {
+          navigation.map((item) => (
+            <a
+              href={item.href}
+              class:list={['nav-link', { 'nav-link-active': isActive(item.href) }]}
+              aria-current={isActive(item.href) ? 'page' : undefined}
+            >
+              {item.label}
+            </a>
+          ))
+        }
+      </nav>
+
+      <button
+        type="button"
+        class="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-stone-200 text-stone-700 transition hover:border-brand-200 hover:bg-brand-50 hover:text-brand-700 xl:hidden"
+        aria-label="Abrir menú de navegación"
+        aria-controls="mobile-menu"
+        aria-expanded="false"
+        data-menu-open
+      >
+        <Icon name="menu" class="h-5 w-5" />
+      </button>
+    </div>
+  </div>
+
+  <div class="border-b border-sun-200 bg-sun-100">
+    <div class="container-site flex flex-wrap items-center justify-between gap-x-4 gap-y-1 py-2.5 text-[11px] sm:text-xs">
+      <p class="flex items-center gap-2 font-bold text-stone-700">
+        <span class="relative flex h-2 w-2 shrink-0">
+          <span class="absolute inline-flex h-full w-full rounded-full bg-brand-500"></span>
+          <span class="relative inline-flex h-2 w-2 rounded-full bg-brand-600"></span>
+        </span>
+        Actualmente no estamos en periodo de matrículas.
+      </p>
+      <a href="/admisiones" class="group inline-flex items-center gap-1.5 font-extrabold text-brand-800 underline decoration-brand-300 decoration-2 underline-offset-4 transition hover:text-brand-950">
+        Ver detalles
+        <Icon name="arrow-right" class="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" />
+      </a>
+    </div>
+  </div>
+
+  <div id="mobile-menu" class="mobile-menu xl:hidden" aria-hidden="true" inert>
+    <button
+      type="button"
+      class="mobile-menu__overlay"
+      aria-label="Cerrar menú de navegación"
+      data-menu-close
+      tabindex="-1"
+    ></button>
+
+    <div class="mobile-menu__panel" data-menu-panel>
+      <div class="flex items-center justify-between border-b border-stone-100 px-5 py-4">
+        <a href="/" class="flex items-center gap-2.5" data-menu-link>
+          <img src="/assets/logo.png" alt="" width="44" height="44" class="h-10 w-10 object-contain" />
+          <span class="leading-tight">
+            <span class="block text-[9px] font-extrabold uppercase tracking-[0.14em] text-brand-700">UEF</span>
+            <span class="block font-display text-lg font-semibold text-stone-900">10 de Agosto</span>
+          </span>
+        </a>
+        <button
+          type="button"
+          class="inline-flex h-10 w-10 items-center justify-center rounded-full border border-stone-200 text-stone-700 transition hover:bg-stone-50"
+          aria-label="Cerrar menú de navegación"
+          data-menu-close
+        >
+          <Icon name="x" class="h-5 w-5" />
+        </button>
+      </div>
+
+      <nav class="flex-1 overflow-y-auto px-5 py-6" aria-label="Navegación móvil">
+        <p class="mb-3 text-[10px] font-extrabold uppercase tracking-[0.18em] text-stone-400">Navegación</p>
+        <ul class="space-y-1">
+          {
+            navigation.map((item, index) => (
+              <li>
+                <a
+                  href={item.href}
+                  class:list={[
+                    'group flex items-center justify-between rounded-2xl px-4 py-3.5 text-base font-bold transition',
+                    isActive(item.href)
+                      ? 'bg-brand-50 text-brand-700'
+                      : 'text-stone-700 hover:bg-stone-50 hover:text-brand-700',
+                  ]}
+                  aria-current={isActive(item.href) ? 'page' : undefined}
+                  data-menu-link
+                >
+                  <span class="flex items-center gap-3">
+                    <span class:list={[
+                      'text-[10px] font-extrabold tabular-nums',
+                      isActive(item.href) ? 'text-brand-400' : 'text-stone-300',
+                    ]}>
+                      {String(index + 1).padStart(2, '0')}
+                    </span>
+                    {item.label}
+                  </span>
+                  <Icon name="arrow-up-right" class="h-4 w-4 text-stone-300 transition group-hover:text-brand-500" />
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+
+        <div class="mt-8 rounded-3xl bg-cream p-5">
+          <p class="text-[10px] font-extrabold uppercase tracking-[0.18em] text-brand-700">Estamos cerca</p>
+          <p class="mt-2 flex items-start gap-2 text-sm font-semibold leading-relaxed text-stone-600">
+            <Icon name="map-pin" class="mt-0.5 h-4 w-4 shrink-0 text-brand-600" />
+            {site.location}
+          </p>
+          <div class="mt-4 flex items-center gap-2">
+            <a
+              href={site.facebook}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="inline-flex h-10 w-10 items-center justify-center rounded-full bg-white text-brand-700 shadow-sm transition hover:bg-brand-700 hover:text-white"
+              aria-label="Facebook oficial de la institución"
+            >
+              <Icon name="facebook" class="h-4 w-4" />
+            </a>
+            <a
+              href={site.tiktok}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="inline-flex h-10 w-10 items-center justify-center rounded-full bg-white text-brand-700 shadow-sm transition hover:bg-brand-700 hover:text-white"
+              aria-label="TikTok oficial de la institución"
+            >
+              <Icon name="tiktok" class="h-4 w-4" />
+            </a>
+          </div>
+        </div>
+      </nav>
+
+      <div class="border-t border-stone-100 px-5 py-4">
+        <p class="text-center font-display text-sm italic text-stone-400">“Siempre sembrando”</p>
+      </div>
+    </div>
+  </div>
+</header>
+
+<script>
+  const menu = document.querySelector<HTMLElement>('#mobile-menu');
+  const openButton = document.querySelector<HTMLButtonElement>('[data-menu-open]');
+  const panel = menu?.querySelector<HTMLElement>('[data-menu-panel]');
+
+  if (menu && openButton && panel) {
+    const closeButtons = menu.querySelectorAll<HTMLElement>('[data-menu-close]');
+    const menuLinks = menu.querySelectorAll<HTMLElement>('[data-menu-link]');
+    let lastFocused: HTMLElement | null = null;
+
+    const openMenu = () => {
+      lastFocused = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+      menu.inert = false;
+      menu.classList.add('is-open');
+      menu.setAttribute('aria-hidden', 'false');
+      openButton.setAttribute('aria-expanded', 'true');
+      document.body.style.overflow = 'hidden';
+      const firstClose = menu.querySelector<HTMLElement>('[data-menu-close]');
+      firstClose?.focus();
+    };
+
+    const closeMenu = (restoreFocus = true) => {
+      menu.classList.remove('is-open');
+      menu.setAttribute('aria-hidden', 'true');
+      openButton.setAttribute('aria-expanded', 'false');
+      document.body.style.overflow = '';
+      menu.inert = true;
+      if (restoreFocus) lastFocused?.focus();
+    };
+
+    openButton.addEventListener('click', openMenu);
+    closeButtons.forEach((button) => button.addEventListener('click', () => closeMenu()));
+
+    menuLinks.forEach((link) => {
+      link.addEventListener('click', () => closeMenu(false));
+    });
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && menu.classList.contains('is-open')) {
+        closeMenu();
+      }
+    });
+
+    window.addEventListener('resize', () => {
+      if (window.innerWidth >= 1280 && menu.classList.contains('is-open')) {
+        closeMenu(false);
+      }
+    });
+  }
+</script>

@@ -1,0 +1,25 @@
+# Dependencias y build
+node_modules/
+dist/
+.astro/
+
+# Entorno
+.env
+.env.*
+!.env.example
+
+# Sistema
+.DS_Store
+Thumbs.db
+
+# Editores
+.vscode/*
+!.vscode/extensions.json
+.idea/
+
+# Netlify
+.netlify/
+
+# Archivos originales de fotografías (se conservan localmente)
+fotos de la institucion/
+marco.jfif

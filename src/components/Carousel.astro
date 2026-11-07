@@ -1,0 +1,264 @@
+---
+import Icon from './Icon.astro';
+import type { Photo } from '../data/photos';
+
+interface Props {
+  slides: Photo[];
+  label?: string;
+  class?: string;
+}
+
+const { slides, label = 'Galería de fotografías del colegio', class: className = '' } = Astro.props;
+const total = String(slides.length).padStart(2, '0');
+---
+
+<div
+  class:list={['relative', className]}
+  role="region"
+  aria-roledescription="carrusel"
+  aria-label={label}
+  data-carousel
+>
+  <div class="relative overflow-hidden rounded-[1.75rem] bg-stone-900 shadow-2xl shadow-stone-950/40 ring-1 ring-white/10 sm:rounded-[2rem]">
+    <div class="relative aspect-[4/3] sm:aspect-[16/9] lg:aspect-[21/9]">
+      <div class="carousel-track" data-track>
+        {
+          slides.map((slide, index) => (
+            <figure
+              class="carousel-slide relative"
+              role="group"
+              aria-roledescription="diapositiva"
+              aria-label={`${index + 1} de ${slides.length}`}
+              aria-hidden={index === 0 ? 'false' : 'true'}
+              data-slide
+              data-caption={slide.caption}
+            >
+              <img
+                src={slide.src}
+                srcset={`${slide.thumb} 640w, ${slide.src} 1500w`}
+                sizes="(min-width: 1280px) 1200px, 100vw"
+                alt={slide.alt}
+                loading={index === 0 ? 'eager' : 'lazy'}
+                fetchpriority={index === 0 ? 'high' : 'auto'}
+                decoding="async"
+                class="h-full w-full object-cover"
+              />
+              <div class="absolute inset-0 bg-gradient-to-t from-stone-950/90 via-stone-950/15 to-stone-950/10" aria-hidden="true"></div>
+
+              <figcaption class="absolute inset-x-0 bottom-0 flex items-end justify-between gap-4 p-5 sm:p-8 lg:p-10">
+                <div>
+                  <span class="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-3 py-1 text-[9px] font-extrabold uppercase tracking-[0.16em] text-white backdrop-blur">
+                    <span class="h-1.5 w-1.5 rounded-full bg-sun-400" aria-hidden="true"></span>
+                    Vida escolar
+                  </span>
+                  <p class="mt-3 max-w-xl text-xl leading-tight text-white sm:text-2xl lg:text-3xl">
+                    {slide.caption}
+                  </p>
+                </div>
+              </figcaption>
+            </figure>
+          ))
+        }
+      </div>
+    </div>
+
+    <div class="absolute right-4 top-4 sm:right-6 sm:top-6">
+      <div class="flex items-center gap-2">
+        <span class="rounded-full border border-white/15 bg-stone-950/35 px-3 py-1.5 text-[11px] font-extrabold tabular-nums text-white/80 backdrop-blur">
+          <span data-current>01</span> / {total}
+        </span>
+        <button
+          type="button"
+          class="inline-flex h-9 w-9 items-center justify-center rounded-full border border-white/15 bg-stone-950/35 text-white backdrop-blur transition hover:bg-white/15"
+          aria-label="Pausar reproducción automática"
+          aria-pressed="false"
+          data-toggle
+        >
+          <span data-icon-pause><Icon name="pause" class="h-3.5 w-3.5" /></span>
+          <span class="hidden" data-icon-play><Icon name="play" class="h-3.5 w-3.5" /></span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="mt-4 flex items-center justify-between gap-4">
+    <div class="flex flex-wrap items-center gap-1.5" aria-label="Seleccionar fotografía">
+      {
+        slides.map((slide, index) => (
+          <button
+            type="button"
+            class="carousel-dot focus-visible:outline-offset-4"
+            aria-label={`Ir a la fotografía ${index + 1}: ${slide.caption}`}
+            aria-current={index === 0 ? 'true' : 'false'}
+            data-dot
+          ></button>
+        ))
+      }
+    </div>
+
+    <div class="flex items-center gap-2">
+      <button
+        type="button"
+        class="inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/15 bg-white/5 text-white transition hover:bg-white/15"
+        aria-label="Fotografía anterior"
+        data-prev
+      >
+        <Icon name="chevron-left" class="h-4 w-4" />
+      </button>
+      <button
+        type="button"
+        class="inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/15 bg-white/5 text-white transition hover:bg-white/15"
+        aria-label="Fotografía siguiente"
+        data-next
+      >
+        <Icon name="chevron-right" class="h-4 w-4" />
+      </button>
+    </div>
+  </div>
+
+  <p class="sr-only" data-status>Fotografía 1 de {slides.length}</p>
+</div>
+
+<script>
+  const carousels = document.querySelectorAll<HTMLElement>('[data-carousel]');
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  carousels.forEach((root) => {
+    const track = root.querySelector<HTMLElement>('[data-track]');
+    const slides = Array.from(root.querySelectorAll<HTMLElement>('[data-slide]'));
+    const dots = Array.from(root.querySelectorAll<HTMLButtonElement>('[data-dot]'));
+    const currentLabels = root.querySelectorAll<HTMLElement>('[data-current]');
+    const status = root.querySelector<HTMLElement>('[data-status]');
+    const previousButton = root.querySelector<HTMLButtonElement>('[data-prev]');
+    const nextButton = root.querySelector<HTMLButtonElement>('[data-next]');
+    const toggleButton = root.querySelector<HTMLButtonElement>('[data-toggle]');
+    const pauseIcon = root.querySelector<HTMLElement>('[data-icon-pause]');
+    const playIcon = root.querySelector<HTMLElement>('[data-icon-play]');
+
+    if (!track || slides.length === 0 || !previousButton || !nextButton) return;
+
+    let index = 0;
+    let timer: ReturnType<typeof setInterval> | undefined;
+    let userPaused = false;
+    let touchStartX: number | null = null;
+
+    const formatNumber = (value: number) => String(value).padStart(2, '0');
+
+    const render = () => {
+      track.style.transform = `translateX(-${index * 100}%)`;
+
+      slides.forEach((slide, slideIndex) => {
+        slide.setAttribute('aria-hidden', slideIndex === index ? 'false' : 'true');
+      });
+
+      dots.forEach((dot, dotIndex) => {
+        dot.setAttribute('aria-current', dotIndex === index ? 'true' : 'false');
+      });
+
+      currentLabels.forEach((label) => {
+        label.textContent = formatNumber(index + 1);
+      });
+
+      if (status) {
+        const caption = slides[index]?.dataset.caption ?? '';
+        status.textContent = `Fotografía ${index + 1} de ${slides.length}: ${caption}`;
+      }
+    };
+
+    const stopAutoPlay = () => {
+      if (timer) {
+        clearInterval(timer);
+        timer = undefined;
+      }
+    };
+
+    const startAutoPlay = () => {
+      stopAutoPlay();
+      if (prefersReducedMotion || userPaused || document.hidden || slides.length < 2) return;
+      timer = setInterval(() => {
+        index = (index + 1) % slides.length;
+        render();
+      }, 6500);
+    };
+
+    const goTo = (nextIndex: number) => {
+      index = (nextIndex + slides.length) % slides.length;
+      render();
+    };
+
+    const updateToggleState = () => {
+      if (!toggleButton) return;
+      toggleButton.setAttribute('aria-pressed', String(userPaused));
+      toggleButton.setAttribute(
+        'aria-label',
+        userPaused ? 'Reanudar reproducción automática' : 'Pausar reproducción automática',
+      );
+      pauseIcon?.classList.toggle('hidden', userPaused);
+      playIcon?.classList.toggle('hidden', !userPaused);
+    };
+
+    if (prefersReducedMotion && toggleButton) {
+      toggleButton.hidden = true;
+    }
+
+    toggleButton?.addEventListener('click', () => {
+      userPaused = !userPaused;
+      updateToggleState();
+      if (userPaused) {
+        stopAutoPlay();
+      } else {
+        startAutoPlay();
+      }
+    });
+
+    previousButton.addEventListener('click', () => goTo(index - 1));
+    nextButton.addEventListener('click', () => goTo(index + 1));
+
+    dots.forEach((dot, dotIndex) => {
+      dot.addEventListener('click', () => goTo(dotIndex));
+    });
+
+    root.addEventListener('pointerenter', (event) => {
+      if (event.pointerType === 'mouse') stopAutoPlay();
+    });
+    root.addEventListener('pointerleave', (event) => {
+      if (event.pointerType === 'mouse') startAutoPlay();
+    });
+    root.addEventListener('focusin', stopAutoPlay);
+    root.addEventListener('focusout', (event) => {
+      if (!root.contains(event.relatedTarget as Node | null)) startAutoPlay();
+    });
+
+    root.addEventListener(
+      'touchstart',
+      (event) => {
+        touchStartX = event.touches[0]?.clientX ?? null;
+      },
+      { passive: true },
+    );
+
+    root.addEventListener(
+      'touchend',
+      (event) => {
+        if (touchStartX === null) return;
+        const delta = (event.changedTouches[0]?.clientX ?? touchStartX) - touchStartX;
+        if (Math.abs(delta) > 42) {
+          goTo(delta < 0 ? index + 1 : index - 1);
+        }
+        touchStartX = null;
+      },
+      { passive: true },
+    );
+
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) {
+        stopAutoPlay();
+      } else {
+        startAutoPlay();
+      }
+    });
+
+    render();
+    startAutoPlay();
+  });
+</script>

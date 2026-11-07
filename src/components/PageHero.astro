@@ -1,0 +1,84 @@
+---
+import Icon from './Icon.astro';
+
+interface Props {
+  eyebrow: string;
+  title: string;
+  description?: string;
+  image?: string;
+  imageAlt?: string;
+  breadcrumb?: string;
+  parentLabel?: string;
+  parentHref?: string;
+}
+
+const {
+  eyebrow,
+  title,
+  description,
+  image,
+  imageAlt = '',
+  breadcrumb = eyebrow,
+  parentLabel,
+  parentHref,
+} = Astro.props;
+---
+
+<section class="relative isolate overflow-hidden bg-brand-950">
+  {
+    image && (
+      <img
+        src={image}
+        alt={imageAlt}
+        class="absolute inset-0 -z-20 h-full w-full object-cover object-center opacity-35"
+        loading="eager"
+        fetchpriority="high"
+        decoding="async"
+      />
+    )
+  }
+  <div class="absolute inset-0 -z-10 bg-gradient-to-r from-brand-950 via-brand-950/90 to-brand-900/55" aria-hidden="true"></div>
+  <div class="absolute inset-0 -z-10 bg-ray-pattern" aria-hidden="true"></div>
+  <div class="absolute -right-20 -top-24 -z-10 h-72 w-72 rounded-full border-[30px] border-sun-400/15 sm:h-96 sm:w-96" aria-hidden="true"></div>
+  <div class="absolute -bottom-28 right-1/4 -z-10 h-72 w-72 rounded-full bg-brand-600/20 blur-3xl" aria-hidden="true"></div>
+
+  <div class="container-site relative py-14 sm:py-20 lg:py-24">
+    <nav class="animate-fade-in text-[11px] font-bold text-white/45" aria-label="Ruta de navegación">
+      <ol class="flex flex-wrap items-center gap-2">
+        <li><a href="/" class="transition hover:text-white">Inicio</a></li>
+        <li aria-hidden="true" class="text-white/25">/</li>
+        {
+          parentLabel && parentHref && (
+            <>
+              <li><a href={parentHref} class="transition hover:text-white">{parentLabel}</a></li>
+              <li aria-hidden="true" class="text-white/25">/</li>
+            </>
+          )
+        }
+        <li aria-current="page" class="text-sun-300">{breadcrumb}</li>
+      </ol>
+    </nav>
+
+    <div class="mt-7 max-w-4xl animate-fade-up">
+      <span class="eyebrow eyebrow-light">
+        <span class="h-1.5 w-1.5 rounded-full bg-sun-400" aria-hidden="true"></span>
+        {eyebrow}
+      </span>
+      <h1 class="mt-5 text-4xl leading-[1.02] text-white sm:text-5xl lg:text-6xl">
+        {title}
+      </h1>
+      {
+        description && (
+          <p class="mt-5 max-w-2xl text-base leading-relaxed text-white/70 sm:text-lg">
+            {description}
+          </p>
+        )
+      }
+      <div class="mt-7 flex items-center gap-2 text-xs font-bold uppercase tracking-[0.16em] text-sun-300/80">
+        <span class="h-px w-8 bg-sun-400/60" aria-hidden="true"></span>
+        <Icon name="leaf" class="h-4 w-4" />
+        Siempre sembrando
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,106 @@
+---
+import Icon from './Icon.astro';
+import { navigation, site } from '../data/site';
+
+const year = new Date().getFullYear();
+---
+
+<footer class="relative overflow-hidden bg-brand-950 text-white">
+  <div class="absolute inset-0 bg-ray-pattern" aria-hidden="true"></div>
+  <div class="absolute -right-24 -top-24 h-72 w-72 rounded-full border-[28px] border-sun-400/10" aria-hidden="true"></div>
+  <div class="absolute -bottom-32 -left-24 h-80 w-80 rounded-full bg-brand-800/60 blur-3xl" aria-hidden="true"></div>
+
+  <div class="container-site relative">
+    <div class="grid gap-12 py-14 sm:py-16 lg:grid-cols-[1.25fr_0.8fr_1fr] lg:gap-16">
+      <div>
+        <a href="/" class="inline-flex items-center gap-4" aria-label={`${site.name} — Inicio`}>
+          <span class="flex h-20 w-20 shrink-0 items-center justify-center rounded-3xl bg-white p-2 shadow-xl shadow-black/20">
+            <img src="/assets/logo.png" alt="Escudo de la Unidad Educativa 10 de Agosto" width="64" height="64" class="h-full w-full object-contain" />
+          </span>
+          <span>
+            <span class="block text-[10px] font-extrabold uppercase tracking-[0.18em] text-sun-300">Unidad Educativa Fiscomisional</span>
+            <span class="mt-1 block font-display text-2xl font-semibold leading-tight text-white">10 de Agosto</span>
+            <span class="mt-1 block text-xs font-semibold italic text-white/55">“Siempre sembrando”</span>
+          </span>
+        </a>
+
+        <p class="mt-6 max-w-md text-sm leading-relaxed text-white/65">
+          63 años formando de manera integral a la niñez y juventud de San Lorenzo, con compromiso con nuestra comunidad y con el futuro.
+        </p>
+
+        <div class="mt-6 flex flex-wrap gap-2.5">
+          <a
+            href={site.facebook}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-4 py-2 text-xs font-bold text-white/85 transition hover:border-sun-300/50 hover:bg-white/10 hover:text-white"
+          >
+            <Icon name="facebook" class="h-4 w-4" />
+            Facebook
+            <Icon name="arrow-up-right" class="h-3.5 w-3.5 text-white/40" />
+          </a>
+          <a
+            href={site.tiktok}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-4 py-2 text-xs font-bold text-white/85 transition hover:border-sun-300/50 hover:bg-white/10 hover:text-white"
+          >
+            <Icon name="tiktok" class="h-4 w-4" />
+            TikTok
+            <Icon name="arrow-up-right" class="h-3.5 w-3.5 text-white/40" />
+          </a>
+        </div>
+      </div>
+
+      <div>
+        <h2 class="text-[11px] font-extrabold uppercase tracking-[0.18em] text-sun-300">Navegación</h2>
+        <nav aria-label="Navegación del pie de página" class="mt-5">
+          <ul class="grid grid-cols-2 gap-x-6 gap-y-3 lg:grid-cols-1">
+            {
+              navigation.map((item) => (
+                <li>
+                  <a href={item.href} class="group inline-flex items-center gap-2 text-sm font-semibold text-white/65 transition hover:text-white">
+                    <span class="h-px w-3 bg-sun-400/50 transition-all group-hover:w-5 group-hover:bg-sun-300"></span>
+                    {item.label}
+                  </a>
+                </li>
+              ))
+            }
+          </ul>
+        </nav>
+      </div>
+
+      <div>
+        <h2 class="text-[11px] font-extrabold uppercase tracking-[0.18em] text-sun-300">Encuéntranos</h2>
+        <div class="mt-5 rounded-3xl border border-white/10 bg-white/5 p-5">
+          <p class="flex items-start gap-3 text-sm font-semibold leading-relaxed text-white/80">
+            <span class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-sun-400/15 text-sun-300">
+              <Icon name="map-pin" class="h-4 w-4" />
+            </span>
+            <span>
+              San Lorenzo<br />
+              Provincia de Esmeraldas<br />
+              Ecuador
+            </span>
+          </p>
+          <div class="mt-5 border-t border-white/10 pt-4">
+            <p class="text-[10px] font-extrabold uppercase tracking-[0.18em] text-white/35">Canales oficiales</p>
+            <p class="mt-2 text-xs leading-relaxed text-white/55">
+              Sigue nuestras novedades y el estado de las matrículas en Facebook y TikTok.
+            </p>
+          </div>
+        </div>
+
+        <a href="/admisiones" class="group mt-5 inline-flex items-center gap-2 text-sm font-extrabold text-sun-300 transition hover:text-sun-200">
+          Consulta el proceso de admisiones
+          <Icon name="arrow-right" class="h-4 w-4 transition-transform group-hover:translate-x-1" />
+        </a>
+      </div>
+    </div>
+
+    <div class="flex flex-col gap-3 border-t border-white/10 py-6 text-center text-[11px] text-white/40 sm:flex-row sm:items-center sm:justify-between sm:text-left">
+      <p>© {year} {site.name}. Todos los derechos reservados.</p>
+      <p class="font-display text-sm italic text-sun-300/70">Siempre sembrando, siempre creciendo.</p>
+    </div>
+  </div>
+</footer>

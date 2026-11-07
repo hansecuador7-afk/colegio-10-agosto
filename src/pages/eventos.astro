@@ -1,0 +1,143 @@
+---
+import { getCollection } from 'astro:content';
+
+import MainLayout from '../layouts/MainLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import SectionHeading from '../components/SectionHeading.astro';
+import EventCard from '../components/EventCard.astro';
+import Icon from '../components/Icon.astro';
+import CtaBand from '../components/CtaBand.astro';
+import { eventHref, formatLongDate, getDateBadge, splitEvents } from '../lib/eventos';
+import { site } from '../data/site';
+
+const eventos = await getCollection('eventos');
+const { upcoming, past } = splitEvents(eventos);
+---
+
+<MainLayout
+  title="Eventos"
+  description="Próximos eventos y actividades de la Unidad Educativa Fiscomisional 10 de Agosto en San Lorenzo, Esmeraldas."
+>
+  <PageHero
+    eyebrow="Agenda institucional"
+    breadcrumb="Eventos"
+    title="Eventos y vida institucional"
+    description="Actividades que reúnen a estudiantes, docentes y familias y que forman parte de la memoria de nuestra comunidad."
+    image="/assets/fotos/IMG_5041.jpg"
+    imageAlt="Estudiantes bailando con vestuario tradicional durante una actividad cultural"
+  />
+
+  <!-- Próximos -->
+  <section class="bg-white py-16 sm:py-20 lg:py-24">
+    <div class="container-site">
+      <div class="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+        <SectionHeading
+          eyebrow="Lo que viene"
+          title="Próximos eventos"
+          description="Consulta las actividades programadas. La agenda se actualiza periódicamente."
+        />
+        <span class="inline-flex shrink-0 items-center gap-2 self-start rounded-full border border-brand-200 bg-brand-50 px-4 py-2 text-[10px] font-extrabold uppercase tracking-[0.14em] text-brand-700 md:self-auto">
+          <Icon name="calendar" class="h-4 w-4" />
+          {upcoming.length} {upcoming.length === 1 ? 'evento programado' : 'eventos programados'}
+        </span>
+      </div>
+
+      {
+        upcoming.length > 0 ? (
+          <div class="mt-10 grid gap-5 md:grid-cols-2">
+            {upcoming.map((evento, index) => (
+              <EventCard evento={evento} delay={index * 80} />
+            ))}
+          </div>
+        ) : (
+          <div class="mt-10 rounded-3xl border border-dashed border-stone-300 bg-cream p-9 text-center sm:p-12" data-reveal>
+            <span class="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-white text-brand-700 shadow-sm">
+              <Icon name="calendar" class="h-7 w-7" />
+            </span>
+            <h2 class="mt-5 text-2xl">No hay eventos próximos por ahora</h2>
+            <p class="mx-auto mt-2 max-w-lg text-sm leading-relaxed text-stone-500">
+              Cuando se programe una nueva actividad, la publicaremos en esta sección y en nuestras redes sociales oficiales.
+            </p>
+            <div class="mt-6 flex flex-wrap justify-center gap-2.5">
+              <a href={site.facebook} target="_blank" rel="noopener noreferrer" class="btn btn-primary !px-5 !py-2.5 text-xs">
+                <Icon name="facebook" class="h-4 w-4" />
+                Facebook
+              </a>
+              <a href={site.tiktok} target="_blank" rel="noopener noreferrer" class="btn btn-secondary !px-5 !py-2.5 text-xs">
+                <Icon name="tiktok" class="h-4 w-4" />
+                TikTok
+              </a>
+            </div>
+          </div>
+        )
+      }
+    </div>
+  </section>
+
+  {
+    past.length > 0 && (
+      <section class="bg-cream py-16 sm:py-20">
+        <div class="container-site">
+          <SectionHeading
+            eyebrow="Nuestra memoria"
+            title="Eventos anteriores"
+            description="Un repaso por las actividades que ya compartimos como comunidad."
+          />
+
+          <div class="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+            {past.map((evento, index) => {
+              const badge = getDateBadge(evento.data.date);
+              return (
+                <a
+                  href={eventHref(evento)}
+                  class="group flex items-center gap-4 rounded-2xl border border-stone-200 bg-white p-3.5 shadow-sm shadow-stone-900/5 transition duration-300 hover:-translate-y-1 hover:border-brand-200 hover:shadow-md"
+                  data-reveal
+                  style={`--reveal-delay: ${index * 60}ms`}
+                >
+                  <div class="relative h-20 w-24 shrink-0 overflow-hidden rounded-xl bg-stone-100">
+                    <img src={evento.data.image} alt="" loading="lazy" decoding="async" class="h-full w-full object-cover transition duration-500 group-hover:scale-105" />
+                  </div>
+                  <div class="min-w-0 flex-1">
+                    <p class="text-[9px] font-extrabold uppercase tracking-[0.13em] text-stone-400">
+                      {badge.day} {badge.month} · {formatLongDate(evento.data.date).split(' de ').slice(-1)}
+                    </p>
+                    <h3 class="mt-1 text-base leading-snug transition-colors group-hover:text-brand-700">{evento.data.title}</h3>
+                  </div>
+                  <Icon name="arrow-right" class="h-4 w-4 shrink-0 text-stone-300 transition group-hover:translate-x-0.5 group-hover:text-brand-600" />
+                </a>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+    )
+  }
+
+  <!-- Nota de agenda -->
+  <section class="bg-white pb-16 sm:pb-20">
+    <div class="container-site">
+      <div class="flex flex-col gap-4 rounded-3xl border border-brand-100 bg-brand-50 p-6 sm:flex-row sm:items-center sm:p-7" data-reveal>
+        <span class="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-white text-brand-700 shadow-sm">
+          <Icon name="info" class="h-5 w-5" />
+        </span>
+        <div class="flex-1">
+          <h2 class="text-lg text-stone-900">¿Quieres estar al día con nuestras actividades?</h2>
+          <p class="mt-1 text-sm leading-relaxed text-stone-500">Publicamos novedades en nuestras redes oficiales. También puedes revisar la galería para conocer momentos de nuestra vida escolar.</p>
+        </div>
+        <a href="/galeria" class="btn btn-secondary shrink-0">
+          Ir a la galería
+          <Icon name="image" class="h-4 w-4" />
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <CtaBand
+    title="Cada evento también cuenta una parte de nuestra historia."
+    description="Conoce la oferta académica y el proceso de admisiones de nuestra institución."
+    primaryLabel="Ver oferta académica"
+    primaryHref="/oferta"
+    secondaryLabel="Estado de matrículas"
+    secondaryHref="/admisiones"
+  />
+</MainLayout>

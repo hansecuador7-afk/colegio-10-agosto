@@ -1,0 +1,51 @@
+backend:
+  name: git-gateway
+  branch: main
+
+# Permite probar el panel en local con:
+#   npx decap-server
+# y luego abrir http://localhost:4321/admin/
+local_backend: true
+
+# Las imágenes que se suban desde el panel se guardan en public/assets/eventos
+# y se guardan en el contenido con la ruta pública /assets/eventos/...
+media_folder: "public/assets/eventos"
+public_folder: "/assets/eventos"
+
+# Identidad visual del panel
+logo_url: "/assets/logo.png"
+
+collections:
+  - name: eventos
+    label: Eventos
+    label_singular: Evento
+    description: "Publica las actividades y eventos de la Unidad Educativa Fiscomisional 10 de Agosto."
+    folder: "src/content/eventos"
+    create: true
+    delete: true
+    slug: "{{slug}}"
+    extension: "md"
+    format: frontmatter
+    summary: "{{title}}"
+    sortable_fields: ["date", "title"]
+    fields:
+      - label: Título
+        name: title
+        widget: string
+        hint: "Escribe un título breve y claro para el evento."
+      - label: Fecha del evento
+        name: date
+        widget: datetime
+        date_format: DD/MM/YYYY
+        time_format: false
+        format: YYYY-MM-DD
+        hint: "Selecciona el día en que se realizará el evento."
+      - label: Imagen
+        name: image
+        widget: image
+        choose_url: false
+        hint: "Sube una fotografía horizontal. Se guardará en /public/assets/eventos/."
+      - label: Descripción
+        name: description
+        widget: text
+        hint: "Describe la actividad, sus participantes y la información importante."

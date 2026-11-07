@@ -1,0 +1,53 @@
+---
+interface Props {
+  eyebrow?: string;
+  title: string;
+  description?: string;
+  center?: boolean;
+  light?: boolean;
+  class?: string;
+}
+
+const {
+  eyebrow,
+  title,
+  description,
+  center = false,
+  light = false,
+  class: className = '',
+} = Astro.props;
+---
+
+<div
+  class:list={['max-w-3xl', center && 'mx-auto text-center', className]}
+  data-reveal
+>
+  {
+    eyebrow && (
+      <span class:list={['eyebrow', light && 'eyebrow-light']}>
+        <span class="h-1.5 w-1.5 rounded-full bg-current" aria-hidden="true"></span>
+        {eyebrow}
+      </span>
+    )
+  }
+  <h2
+    class:list={[
+      'mt-5 text-3xl leading-[1.06] sm:text-4xl lg:text-[2.75rem]',
+      light ? 'text-white' : 'text-stone-900',
+    ]}
+  >
+    {title}
+  </h2>
+  {
+    description && (
+      <p
+        class:list={[
+          'mt-4 text-base leading-relaxed sm:text-lg',
+          light ? 'text-white/65' : 'text-stone-500',
+        ]}
+      >
+        {description}
+      </p>
+    )
+  }
+</div>

@@ -1,0 +1,298 @@
+---
+import { getCollection } from 'astro:content';
+
+import MainLayout from '../layouts/MainLayout.astro';
+import Icon from '../components/Icon.astro';
+import SectionHeading from '../components/SectionHeading.astro';
+import Carousel from '../components/Carousel.astro';
+import EventCard from '../components/EventCard.astro';
+import { featuredPhotos, photos } from '../data/photos';
+import { splitEvents } from '../lib/eventos';
+
+const eventos = await getCollection('eventos');
+const { upcoming } = splitEvents(eventos);
+const nextEvents = upcoming.slice(0, 2);
+
+const accessCards = [
+  {
+    number: '01',
+    title: 'Nosotros',
+    description: 'Nuestra historia, misión, visión y el sentido profundo de “Siempre sembrando”.',
+    href: '/nosotros',
+    icon: 'leaf',
+    tone: 'bg-brand-50 text-brand-700 group-hover:bg-brand-700 group-hover:text-white',
+  },
+  {
+    number: '02',
+    title: 'Oferta académica',
+    description: 'Desde Educación Inicial y Preparatoria hasta los dos bachilleratos.',
+    href: '/oferta',
+    icon: 'graduation-cap',
+    tone: 'bg-sun-100 text-sun-700 group-hover:bg-sun-400 group-hover:text-brand-950',
+  },
+  {
+    number: '03',
+    title: 'Admisiones',
+    description: 'Estado del proceso y los requisitos para cuando se habilite la matrícula.',
+    href: '/admisiones',
+    icon: 'shield-check',
+    tone: 'bg-brand-50 text-brand-700 group-hover:bg-brand-700 group-hover:text-white',
+  },
+  {
+    number: '04',
+    title: 'Eventos',
+    description: 'Las próximas actividades que reúnen a nuestra comunidad educativa.',
+    href: '/eventos',
+    icon: 'calendar',
+    tone: 'bg-sun-100 text-sun-700 group-hover:bg-sun-400 group-hover:text-brand-950',
+  },
+];
+
+const stats = [
+  { value: '63', label: 'años de trayectoria' },
+  { value: '6', label: 'etapas educativas' },
+  { value: '2', label: 'opciones de bachillerato' },
+  { value: '1', label: 'comunidad que siembra' },
+];
+---
+
+<MainLayout>
+  <!-- Portada -->
+  <section class="relative overflow-hidden bg-cream">
+    <div class="absolute inset-0 bg-dot-grid opacity-60" aria-hidden="true"></div>
+    <div class="absolute -right-44 top-0 h-[38rem] w-[38rem] rounded-full bg-sun-200/50 blur-3xl" aria-hidden="true"></div>
+    <div class="absolute -left-44 bottom-0 h-96 w-96 rounded-full bg-brand-100/70 blur-3xl" aria-hidden="true"></div>
+
+    <div class="container-site relative grid items-center gap-12 pb-16 pt-12 sm:pt-16 lg:grid-cols-[1.05fr_0.95fr] lg:gap-16 lg:pb-24 lg:pt-20">
+      <div class="animate-fade-up">
+        <div class="flex flex-wrap items-center gap-2">
+          <span class="eyebrow">
+            <span class="h-1.5 w-1.5 rounded-full bg-brand-600" aria-hidden="true"></span>
+            63 años de trayectoria
+          </span>
+          <span class="inline-flex items-center gap-1.5 rounded-full border border-stone-200 bg-white/80 px-3.5 py-1.5 text-[11px] font-bold text-stone-500">
+            <Icon name="map-pin" class="h-3.5 w-3.5 text-brand-600" />
+            San Lorenzo, Esmeraldas
+          </span>
+        </div>
+
+        <p class="mt-8 text-[11px] font-extrabold uppercase tracking-[0.22em] text-brand-700 sm:text-sm">
+          Unidad Educativa Fiscomisional
+        </p>
+        <h1 class="mt-3 text-[3.5rem] leading-[0.9] tracking-[-0.04em] text-stone-950 sm:text-7xl lg:text-[5.4rem]">
+          10 de Agosto
+        </h1>
+        <p class="mt-4 font-display text-3xl italic text-brand-700 sm:text-4xl">“Siempre sembrando”</p>
+        <p class="mt-6 max-w-xl text-base leading-relaxed text-stone-600 sm:text-lg">
+          En San Lorenzo, Esmeraldas, sembramos conocimiento, valores y oportunidades desde hace 63 años. Una educación fiscomisional, inclusiva y comprometida con la formación integral de la niñez y juventud.
+        </p>
+
+        <div class="mt-8 flex flex-wrap gap-3">
+          <a href="/oferta" class="btn btn-primary">
+            Descubre nuestra oferta
+            <Icon name="arrow-right" class="h-4 w-4" />
+          </a>
+          <a href="/nosotros" class="btn btn-secondary">Conoce el colegio</a>
+        </div>
+
+        <div class="mt-8 flex flex-wrap items-center gap-x-5 gap-y-3 border-t border-stone-200 pt-5 text-xs font-semibold text-stone-500">
+          <span class="flex items-center gap-2">
+            <Icon name="leaf" class="h-4 w-4 text-brand-600" />
+            Formación integral
+          </span>
+          <span class="flex items-center gap-2">
+            <Icon name="shield-check" class="h-4 w-4 text-brand-600" />
+            Inclusión
+          </span>
+          <span class="flex items-center gap-2">
+            <Icon name="monitor" class="h-4 w-4 text-brand-600" />
+            Bachillerato técnico
+          </span>
+        </div>
+      </div>
+
+      <div class="relative mx-auto w-full max-w-xl animate-fade-up lg:max-w-none" style="animation-delay: 160ms">
+        <div class="absolute -inset-3 rotate-2 rounded-[2.5rem] bg-sun-300 sm:-inset-4" aria-hidden="true"></div>
+        <div class="relative overflow-hidden rounded-[2rem] border-[6px] border-white shadow-2xl shadow-stone-950/20">
+          <div class="aspect-[4/3]">
+            <img
+              src="/assets/marco.jpg"
+              alt="Banda institucional y comunidad educativa reunida en las gradas del colegio"
+              width="1280"
+              height="593"
+              class="h-full w-full object-cover"
+              loading="eager"
+              fetchpriority="high"
+            />
+          </div>
+          <div class="absolute inset-0 bg-gradient-to-t from-stone-950/75 via-transparent to-transparent" aria-hidden="true"></div>
+          <div class="absolute inset-x-0 bottom-0 p-5 sm:p-6">
+            <p class="text-[9px] font-extrabold uppercase tracking-[0.18em] text-sun-300">Nuestra comunidad</p>
+            <p class="mt-1.5 font-display text-lg leading-tight text-white sm:text-xl">Banda y estudiantes, sembrando juntos.</p>
+          </div>
+        </div>
+
+        <div class="absolute -bottom-6 left-3 flex -rotate-2 items-center gap-3 rounded-2xl bg-white px-4 py-3 shadow-xl shadow-stone-950/15 sm:left-5 sm:px-5">
+          <span class="font-display text-4xl font-semibold leading-none text-brand-700">63</span>
+          <span class="text-[9px] font-extrabold uppercase leading-[1.25] tracking-[0.14em] text-stone-500">
+            años sembrando<br />futuro
+          </span>
+        </div>
+
+        <div class="absolute -right-2 -top-5 hidden rotate-3 rounded-2xl border border-stone-100 bg-white p-2 shadow-xl shadow-stone-950/10 animate-float sm:block">
+          <img src="/assets/logo.png" alt="" width="72" height="72" class="h-16 w-16 object-contain" />
+        </div>
+      </div>
+    </div>
+
+    <div class="relative border-t border-stone-200 bg-white/80 backdrop-blur">
+      <div class="container-site grid grid-cols-2 divide-x divide-stone-200/80 lg:grid-cols-4 [&>div]:px-3 [&>div]:py-5 sm:[&>div]:px-6">
+        {
+          stats.map((stat) => (
+            <div class="text-center sm:text-left">
+              <p class="font-display text-3xl font-semibold leading-none text-brand-700 sm:text-4xl">{stat.value}</p>
+              <p class="mt-1.5 text-[9px] font-extrabold uppercase leading-tight tracking-[0.12em] text-stone-400 sm:text-[10px]">{stat.label}</p>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- Accesos a las secciones -->
+  <section class="bg-white py-16 sm:py-20 lg:py-24">
+    <div class="container-site">
+      <div class="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+        <SectionHeading
+          eyebrow="Recorre el sitio"
+          title="Cada sección, una puerta para conocernos"
+          description="Navega por páginas independientes y encuentra la información que buscas sin recorrer toda la web de una sola vez."
+        />
+        <a href="/galeria" class="group inline-flex shrink-0 items-center gap-2 text-sm font-extrabold text-brand-700 transition hover:text-brand-900">
+          Explorar la galería
+          <span class="flex h-9 w-9 items-center justify-center rounded-full bg-brand-50 transition group-hover:bg-brand-700 group-hover:text-white">
+            <Icon name="image" class="h-4 w-4" />
+          </span>
+        </a>
+      </div>
+
+      <div class="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        {
+          accessCards.map((card, index) => (
+            <a
+              href={card.href}
+              class="group card-lift relative flex flex-col overflow-hidden rounded-3xl border border-stone-200 bg-white p-6 shadow-sm shadow-stone-900/5 hover:border-brand-200"
+              data-reveal
+              style={`--reveal-delay: ${index * 80}ms`}
+            >
+              <span class="pointer-events-none absolute right-4 top-3 font-display text-5xl font-semibold text-stone-100 transition group-hover:text-brand-50">
+                {card.number}
+              </span>
+              <span class:list={['relative flex h-11 w-11 items-center justify-center rounded-2xl transition duration-300', card.tone]}>
+                <Icon name={card.icon} class="h-5 w-5" />
+              </span>
+              <h3 class="relative mt-6 text-xl leading-tight">{card.title}</h3>
+              <p class="relative mt-2 flex-1 text-sm leading-relaxed text-stone-500">{card.description}</p>
+              <span class="relative mt-6 inline-flex items-center gap-2 text-[11px] font-extrabold uppercase tracking-[0.14em] text-brand-700">
+                Explorar
+                <Icon name="arrow-right" class="h-4 w-4 transition-transform group-hover:translate-x-1" />
+              </span>
+              <span class="pointer-events-none absolute inset-x-0 top-0 h-1 origin-left scale-x-0 bg-gradient-to-r from-brand-700 to-sun-400 transition-transform duration-300 group-hover:scale-x-100" aria-hidden="true"></span>
+            </a>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- Carrusel de fotografías -->
+  <section class="relative overflow-hidden bg-brand-950 py-16 sm:py-20 lg:py-24">
+    <div class="absolute inset-0 bg-ray-pattern" aria-hidden="true"></div>
+    <div class="absolute -right-32 top-1/4 h-96 w-96 rounded-full bg-brand-700/25 blur-3xl" aria-hidden="true"></div>
+    <div class="absolute -left-32 bottom-0 h-80 w-80 rounded-full bg-sun-500/10 blur-3xl" aria-hidden="true"></div>
+
+    <div class="container-site relative">
+      <div class="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+        <SectionHeading
+          eyebrow="Nuestra vida escolar"
+          title="Momentos que se siembran y florecen"
+          description="Cultura, ceremonias, deporte y el día a día de una comunidad que aprende y comparte."
+          light
+        />
+        <a href="/galeria" class="btn btn-outline-light shrink-0 self-start md:self-auto">
+          Ver las {photos.length} fotografías
+          <Icon name="image" class="h-4 w-4" />
+        </a>
+      </div>
+
+      <div class="mt-10">
+        <Carousel slides={featuredPhotos} label="Fotografías destacadas de la vida escolar" />
+      </div>
+    </div>
+  </section>
+
+  <!-- Próximos eventos -->
+  <section class="bg-cream py-16 sm:py-20 lg:py-24">
+    <div class="container-site">
+      <div class="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+        <SectionHeading
+          eyebrow="Agenda institucional"
+          title="Próximos eventos"
+          description="Actividades que reúnen a estudiantes, docentes y familias alrededor de nuestra comunidad."
+        />
+        <a href="/eventos" class="group inline-flex shrink-0 items-center gap-2 self-start text-sm font-extrabold text-brand-700 transition hover:text-brand-900 md:self-auto">
+          Ver todos los eventos
+          <Icon name="arrow-right" class="h-4 w-4 transition-transform group-hover:translate-x-1" />
+        </a>
+      </div>
+
+      {
+        nextEvents.length > 0 ? (
+          <div class="mt-10 grid gap-5 md:grid-cols-2">
+            {nextEvents.map((evento, index) => (
+              <EventCard evento={evento} delay={index * 90} />
+            ))}
+          </div>
+        ) : (
+          <div class="mt-10 rounded-3xl border border-dashed border-stone-300 bg-white p-10 text-center" data-reveal>
+            <span class="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-brand-50 text-brand-700">
+              <Icon name="calendar" class="h-6 w-6" />
+            </span>
+            <h3 class="mt-4 text-xl">No hay eventos próximos por ahora</h3>
+            <p class="mx-auto mt-2 max-w-md text-sm leading-relaxed text-stone-500">
+              Cuando se programe una nueva actividad, la publicaremos aquí y en nuestras redes sociales oficiales.
+            </p>
+            <a href="/eventos" class="btn btn-secondary mt-6">Ver eventos anteriores</a>
+          </div>
+        )
+      }
+    </div>
+  </section>
+
+  <!-- Cierre -->
+  <section class="relative overflow-hidden bg-brand-700 text-white">
+    <div class="absolute inset-0 bg-dot-grid-light opacity-40" aria-hidden="true"></div>
+    <div class="absolute -right-24 -top-28 h-80 w-80 rounded-full border-[32px] border-sun-400/15" aria-hidden="true"></div>
+    <div class="container-site relative flex flex-col gap-8 py-14 sm:py-16 lg:flex-row lg:items-center lg:justify-between">
+      <div data-reveal>
+        <span class="eyebrow eyebrow-light">
+          <span class="h-1.5 w-1.5 rounded-full bg-sun-400" aria-hidden="true"></span>
+          Siempre sembrando
+        </span>
+        <h2 class="mt-5 max-w-2xl text-3xl leading-tight text-white sm:text-4xl">
+          Sembrar futuro empieza con una decisión.
+        </h2>
+        <p class="mt-3 max-w-xl text-sm leading-relaxed text-white/65 sm:text-base">
+          Conoce nuestra oferta académica y acompáñanos a seguir sembrando historias en San Lorenzo.
+        </p>
+      </div>
+      <div class="flex shrink-0 flex-wrap gap-3" data-reveal style="--reveal-delay: 120ms">
+        <a href="/oferta" class="btn btn-yellow">
+          Ver la oferta
+          <Icon name="graduation-cap" class="h-4 w-4" />
+        </a>
+        <a href="/admisiones" class="btn btn-outline-light">Estado de matrículas</a>
+      </div>
+    </div>
+  </section>
+</MainLayout>

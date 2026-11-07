@@ -1,0 +1,269 @@
+---
+import MainLayout from '../layouts/MainLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import SectionHeading from '../components/SectionHeading.astro';
+import Icon from '../components/Icon.astro';
+import CtaBand from '../components/CtaBand.astro';
+import { site } from '../data/site';
+
+const earlyYears = [
+  {
+    title: 'Educación Inicial',
+    description: 'Un inicio basado en el juego, la exploración y el afecto, para acompañar los primeros pasos en la escuela.',
+    icon: 'sparkles',
+  },
+  {
+    title: 'Preparatoria',
+    description: 'Un puente hacia la educación básica, con experiencias que despiertan la curiosidad y la confianza.',
+    icon: 'heart',
+  },
+];
+
+const basicEducation = [
+  {
+    title: 'Básica Elemental',
+    description: 'Bases para leer, comprender, crear y descubrir el mundo que nos rodea.',
+    icon: 'book-open',
+  },
+  {
+    title: 'Básica Media',
+    description: 'Aprendizajes que invitan a investigar, resolver problemas y trabajar en equipo.',
+    icon: 'compass',
+  },
+  {
+    title: 'Básica Superior',
+    description: 'Acompañamiento para fortalecer la autonomía y preparar la transición al bachillerato.',
+    icon: 'users',
+  },
+];
+
+---
+
+<MainLayout
+  title="Oferta académica"
+  description="Educación Inicial, Preparatoria, Educación General Básica y Bachillerato en Ciencias y Técnico en Informática en la Unidad Educativa Fiscomisional 10 de Agosto."
+>
+  <PageHero
+    eyebrow="Oferta académica"
+    breadcrumb="Oferta académica"
+    title="Un camino continuo para aprender y crecer"
+    description="Acompañamos cada etapa de la formación, desde los primeros pasos en Educación Inicial hasta el Bachillerato en Ciencias o Técnico en Informática."
+    image="/assets/fotos/IMG_5046.jpg"
+    imageAlt="Estudiantes y docentes reunidos dentro de un aula"
+  />
+
+  <!-- Inicial y preparatoria -->
+  <section class="bg-white py-16 sm:py-20 lg:py-24">
+    <div class="container-site">
+      <SectionHeading
+        eyebrow="Los primeros pasos"
+        title="Educación Inicial y Preparatoria"
+        description="Una etapa para descubrir, jugar y construir confianza en un entorno cercano y afectuoso."
+      />
+
+      <div class="mt-10 grid gap-4 md:grid-cols-2">
+        {
+          earlyYears.map((level, index) => (
+            <article
+              class="group relative overflow-hidden rounded-3xl border border-stone-200 bg-cream p-7 transition duration-300 hover:border-brand-200 hover:shadow-lg sm:p-9"
+              data-reveal
+              style={`--reveal-delay: ${index * 80}ms`}
+            >
+              <span class="pointer-events-none absolute -right-6 -top-8 font-display text-[9rem] leading-none text-brand-100/70">
+                {String(index + 1).padStart(2, '0')}
+              </span>
+              <span class="relative flex h-14 w-14 items-center justify-center rounded-2xl bg-white text-brand-700 shadow-sm transition duration-300 group-hover:bg-brand-700 group-hover:text-white">
+                <Icon name={level.icon} class="h-6 w-6" />
+              </span>
+              <h2 class="relative mt-6 text-2xl">{level.title}</h2>
+              <p class="relative mt-3 max-w-md text-sm leading-relaxed text-stone-500 sm:text-[15px]">{level.description}</p>
+              <span class="relative mt-6 inline-flex items-center gap-2 text-[10px] font-extrabold uppercase tracking-[0.14em] text-brand-700">
+                <Icon name="leaf" class="h-4 w-4" />
+                Formación con acompañamiento
+              </span>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- Básica -->
+  <section class="bg-cream py-16 sm:py-20 lg:py-24">
+    <div class="container-site">
+      <div class="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+        <SectionHeading
+          eyebrow="Educación General Básica"
+          title="Tres etapas, un mismo propósito"
+          description="Construimos aprendizajes significativos y acompañamos el crecimiento de cada estudiante."
+        />
+        <p class="shrink-0 rounded-full border border-brand-200 bg-white px-4 py-2 text-[10px] font-extrabold uppercase tracking-[0.14em] text-brand-700">
+          Elemental · Media · Superior
+        </p>
+      </div>
+
+      <div class="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        {
+          basicEducation.map((level, index) => (
+            <article
+              class="group card-lift flex flex-col rounded-3xl border border-stone-200 bg-white p-6 shadow-sm shadow-stone-900/5 hover:border-brand-200 sm:p-7"
+              data-reveal
+              style={`--reveal-delay: ${index * 80}ms`}
+            >
+              <div class="flex items-center justify-between">
+                <span class="flex h-12 w-12 items-center justify-center rounded-2xl bg-brand-50 text-brand-700 transition duration-300 group-hover:bg-brand-700 group-hover:text-white">
+                  <Icon name={level.icon} class="h-5 w-5" />
+                </span>
+                <span class="text-[10px] font-extrabold uppercase tracking-[0.14em] text-stone-300">EGB</span>
+              </div>
+              <h2 class="mt-6 text-xl">{level.title}</h2>
+              <p class="mt-2 flex-1 text-sm leading-relaxed text-stone-500">{level.description}</p>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- Bachillerato -->
+  <section class="bg-white py-16 sm:py-20 lg:py-24">
+    <div class="container-site">
+      <SectionHeading
+        eyebrow="Bachillerato"
+        title="Dos caminos para el siguiente paso"
+        description="Una formación que combina bases académicas sólidas con experiencias que acercan el aprendizaje a la realidad."
+      />
+
+      <div class="mt-10 grid gap-5 lg:grid-cols-2">
+        <article class="group card-lift relative overflow-hidden rounded-3xl border border-stone-200 bg-stone-50 p-7 shadow-sm shadow-stone-900/5 sm:p-9" data-reveal>
+          <div class="absolute inset-x-0 top-0 h-1.5 bg-sun-400" aria-hidden="true"></div>
+          <span class="flex h-14 w-14 items-center justify-center rounded-2xl bg-sun-100 text-sun-700 transition duration-300 group-hover:bg-sun-400 group-hover:text-brand-950">
+            <Icon name="graduation-cap" class="h-6 w-6" />
+          </span>
+          <p class="mt-6 text-[10px] font-extrabold uppercase tracking-[0.16em] text-stone-400">Bachillerato</p>
+          <h2 class="mt-1 text-2xl sm:text-3xl">En Ciencias</h2>
+          <p class="mt-4 max-w-md text-sm leading-relaxed text-stone-500 sm:text-[15px]">
+            Formación académica orientada a comprender la realidad y continuar estudios superiores.
+          </p>
+          <div class="mt-6 flex flex-wrap gap-2">
+            <span class="rounded-full border border-stone-200 bg-white px-3 py-1.5 text-[10px] font-bold text-stone-500">Formación académica</span>
+            <span class="rounded-full border border-stone-200 bg-white px-3 py-1.5 text-[10px] font-bold text-stone-500">Continuidad a estudios superiores</span>
+          </div>
+        </article>
+
+        <article class="group card-lift relative overflow-hidden rounded-3xl bg-brand-950 p-7 text-white shadow-xl shadow-brand-950/20 sm:p-9" data-reveal style="--reveal-delay: 100ms">
+          <div class="absolute inset-0 bg-ray-pattern" aria-hidden="true"></div>
+          <div class="absolute -right-14 -top-14 h-44 w-44 rounded-full border-[24px] border-sun-400/15" aria-hidden="true"></div>
+          <div class="relative">
+            <div class="flex items-start justify-between gap-4">
+              <span class="flex h-14 w-14 items-center justify-center rounded-2xl bg-sun-400 text-brand-950">
+                <Icon name="monitor" class="h-6 w-6" />
+              </span>
+              <span class="inline-flex items-center gap-1.5 rounded-full border border-sun-400/30 bg-sun-400/15 px-3 py-1.5 text-[9px] font-extrabold uppercase tracking-[0.12em] text-sun-300">
+                <Icon name="sparkles" class="h-3 w-3" />
+                Área técnica
+              </span>
+            </div>
+            <p class="mt-6 text-[10px] font-extrabold uppercase tracking-[0.16em] text-white/40">Bachillerato</p>
+            <h2 class="mt-1 text-2xl text-white sm:text-3xl">Técnico en Informática</h2>
+            <p class="mt-4 max-w-md text-sm leading-relaxed text-white/65 sm:text-[15px]">
+              Formación técnica en informática con pasantías durante el último año, para acercar el aprendizaje al mundo real.
+            </p>
+            <div class="mt-6 inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-2 text-[10px] font-extrabold uppercase tracking-[0.14em] text-sun-300">
+              <Icon name="award" class="h-4 w-4" />
+              Pasantías en el último año
+            </div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- Pasantías -->
+  <section class="relative overflow-hidden bg-brand-900 text-white">
+    <div class="grid lg:grid-cols-2">
+      <div class="relative min-h-[20rem] overflow-hidden lg:min-h-[34rem]">
+        <img
+          src="/assets/fotos/IMG_5054.jpg"
+          alt="Estudiante en el photocall de la actividad Mi Viaje Lector"
+          class="absolute inset-0 h-full w-full object-cover"
+          loading="lazy"
+          decoding="async"
+        />
+        <div class="absolute inset-0 bg-gradient-to-t from-brand-950/80 via-brand-950/10 to-transparent lg:bg-gradient-to-r" aria-hidden="true"></div>
+        <div class="absolute bottom-6 left-6 right-6 rounded-2xl border border-white/15 bg-stone-950/30 p-4 backdrop-blur sm:left-8 sm:bottom-8 sm:max-w-sm">
+          <p class="text-[9px] font-extrabold uppercase tracking-[0.18em] text-sun-300">Aprender haciendo</p>
+          <p class="mt-1.5 font-display text-lg text-white sm:text-xl">La experiencia también enseña.</p>
+        </div>
+      </div>
+
+      <div class="relative flex items-center px-5 py-14 sm:px-10 lg:px-14 lg:py-20">
+        <div class="absolute inset-0 bg-ray-pattern" aria-hidden="true"></div>
+        <div class="relative max-w-xl">
+          <span class="eyebrow eyebrow-light">
+            <span class="h-1.5 w-1.5 rounded-full bg-sun-400" aria-hidden="true"></span>
+            Bachillerato Técnico
+          </span>
+          <h2 class="mt-5 text-3xl leading-tight text-white sm:text-4xl">Las pasantías acercan el aula al mundo real.</h2>
+          <p class="mt-4 text-sm leading-relaxed text-white/65 sm:text-base">
+            El área técnica incluye pasantías durante el último año. Es una oportunidad para poner en práctica lo aprendido, conocer dinámicas de trabajo y fortalecer la confianza de nuestras y nuestros estudiantes.
+          </p>
+
+          <ol class="mt-8 space-y-4">
+            {
+              [
+                'Formación en el aula',
+                'Práctica y acompañamiento',
+                'Pasantía durante el último año',
+              ].map((step, index) => (
+                <li class="flex items-center gap-4">
+                  <span class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-sun-400/30 bg-sun-400/10 text-xs font-extrabold text-sun-300">
+                    {String(index + 1).padStart(2, '0')}
+                  </span>
+                  <span class="text-sm font-bold text-white/85">{step}</span>
+                </li>
+              ))
+            }
+          </ol>
+
+          <a href="/admisiones" class="group mt-8 inline-flex items-center gap-2 text-sm font-extrabold text-sun-300 transition hover:text-sun-200">
+            Conoce el proceso de admisiones
+            <Icon name="arrow-right" class="h-4 w-4 transition-transform group-hover:translate-x-1" />
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Nota sobre el enfoque curricular -->
+  <section class="bg-cream py-14 sm:py-16">
+    <div class="container-site">
+      <div class="grid gap-5 md:grid-cols-[1fr_auto] md:items-center">
+        <div class="flex items-start gap-4 rounded-3xl border border-sun-200 bg-sun-50 p-6 sm:p-7" data-reveal>
+          <span class="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-sun-400 text-brand-950">
+            <Icon name="info" class="h-5 w-5" />
+          </span>
+          <div>
+            <h2 class="text-lg text-stone-900">Una formación enfocada en el currículo</h2>
+            <p class="mt-2 text-sm leading-relaxed text-stone-600">
+              Nuestra propuesta se concentra en la formación curricular de cada nivel. No ofrecemos actividades extracurriculares; en el área técnica, la experiencia se complementa con las pasantías del último año.
+            </p>
+          </div>
+        </div>
+        <a href={site.facebook} target="_blank" rel="noopener noreferrer" class="btn btn-secondary shrink-0">
+          <Icon name="facebook" class="h-4 w-4 text-brand-700" />
+          Novedades en Facebook
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <CtaBand
+    title="¿Quieres conocer el estado actual de las matrículas?"
+    description="Consulta los requisitos y mantente atento a nuestras redes oficiales para conocer cuándo se abre el proceso."
+    primaryLabel="Ir a Admisiones"
+    primaryHref="/admisiones"
+    secondaryLabel="Ver eventos"
+    secondaryHref="/eventos"
+  />
+</MainLayout>

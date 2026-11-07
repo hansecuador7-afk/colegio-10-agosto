@@ -1,0 +1,127 @@
+---
+import { getCollection } from 'astro:content';
+
+import MainLayout from '../../layouts/MainLayout.astro';
+import PageHero from '../../components/PageHero.astro';
+import Icon from '../../components/Icon.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import type { Evento } from '../../lib/eventos';
+import { eventSlug, formatLongDate, getDateBadge } from '../../lib/eventos';
+import { site } from '../../data/site';
+
+export async function getStaticPaths() {
+  const eventos = await getCollection('eventos');
+
+  return eventos.map((evento) => ({
+    params: { slug: eventSlug(evento) },
+    props: { evento },
+  }));
+}
+
+interface Props {
+  evento: Evento;
+}
+
+const { evento } = Astro.props;
+const badge = getDateBadge(evento.data.date);
+const longDate = formatLongDate(evento.data.date);
+const metaDescription = evento.data.description.replace(/\s+/g, ' ').slice(0, 160);
+---
+
+<MainLayout title={evento.data.title} description={metaDescription} image={evento.data.image}>
+  <PageHero
+    eyebrow="Evento"
+    breadcrumb="Detalle del evento"
+    parentLabel="Eventos"
+    parentHref="/eventos"
+    title={evento.data.title}
+    image={evento.data.image}
+    imageAlt={`Imagen del evento ${evento.data.title}`}
+  />
+
+  <section class="bg-white py-16 sm:py-20 lg:py-24">
+    <div class="container-site grid items-start gap-10 lg:grid-cols-[1fr_20rem] lg:gap-14">
+      <article>
+        <div class="photo-frame relative overflow-hidden rounded-3xl shadow-xl shadow-stone-950/10" data-reveal>
+          <div class="aspect-[16/10]">
+            <img
+              src={evento.data.image}
+              alt={`Imagen del evento ${evento.data.title}`}
+              loading="eager"
+              decoding="async"
+              class="h-full w-full object-cover"
+            />
+          </div>
+        </div>
+
+        <div class="mt-8" data-reveal>
+          <span class="eyebrow">
+            <span class="h-1.5 w-1.5 rounded-full bg-brand-600" aria-hidden="true"></span>
+            Sobre este evento
+          </span>
+          <h2 class="mt-5 text-2xl sm:text-3xl">Un encuentro de nuestra comunidad</h2>
+          <p class="mt-4 whitespace-pre-line text-sm leading-8 text-stone-600 sm:text-base">
+            {evento.data.description}
+          </p>
+
+          <div class="mt-8 flex flex-wrap items-center gap-3 border-t border-stone-200 pt-6">
+            <a href="/eventos" class="btn btn-secondary !px-5 !py-2.5 text-xs">
+              <Icon name="arrow-left" class="h-4 w-4" />
+              Volver a eventos
+            </a>
+            <a href={site.facebook} target="_blank" rel="noopener noreferrer" class="btn btn-primary !px-5 !py-2.5 text-xs">
+              <Icon name="facebook" class="h-4 w-4" />
+              Seguir en Facebook
+            </a>
+          </div>
+        </div>
+      </article>
+
+      <aside class="space-y-4 lg:sticky lg:top-40" data-reveal style="--reveal-delay: 100ms">
+        <div class="overflow-hidden rounded-3xl border border-stone-200 bg-white shadow-sm shadow-stone-900/5">
+          <div class="bg-brand-700 px-6 py-5 text-white">
+            <p class="text-[10px] font-extrabold uppercase tracking-[0.18em] text-sun-300">Fecha del evento</p>
+            <div class="mt-3 flex items-end gap-3">
+              <span class="font-display text-5xl font-semibold leading-none text-white">{badge.day}</span>
+              <div class="pb-1">
+                <p class="text-sm font-extrabold uppercase tracking-wide text-white">{badge.month}</p>
+                <p class="text-[11px] font-semibold text-white/55">{evento.data.date.getUTCFullYear()}</p>
+              </div>
+            </div>
+            <p class="mt-4 border-t border-white/15 pt-3 text-xs capitalize text-white/65">{longDate}</p>
+          </div>
+
+          <div class="p-6">
+            <p class="text-[10px] font-extrabold uppercase tracking-[0.16em] text-stone-400">Lugar</p>
+            <p class="mt-2 flex items-start gap-2 text-sm font-semibold leading-relaxed text-stone-700">
+              <Icon name="map-pin" class="mt-0.5 h-4 w-4 shrink-0 text-brand-600" />
+              <span>San Lorenzo<br />Esmeraldas, Ecuador</span>
+            </p>
+
+            <div class="mt-5 border-t border-stone-100 pt-5">
+              <p class="text-[10px] font-extrabold uppercase tracking-[0.16em] text-stone-400">Institución</p>
+              <p class="mt-2 text-sm font-semibold leading-relaxed text-stone-700">
+                Unidad Educativa Fiscomisional 10 de Agosto
+              </p>
+              <p class="mt-1 text-[11px] italic text-stone-400">“Siempre sembrando”</p>
+            </div>
+          </div>
+        </div>
+
+        <a href="/eventos" class="group flex items-center justify-between gap-3 rounded-2xl border border-stone-200 bg-cream px-5 py-4 text-sm font-extrabold text-brand-700 transition hover:border-brand-200 hover:bg-brand-50">
+          Ver toda la agenda
+          <Icon name="arrow-right" class="h-4 w-4 transition-transform group-hover:translate-x-1" />
+        </a>
+      </aside>
+    </div>
+  </section>
+
+  <CtaBand
+    title="¿Quieres conocer más sobre nuestra institución?"
+    description="Explora la oferta académica y el estado actual del proceso de matrículas."
+    primaryLabel="Ver oferta académica"
+    primaryHref="/oferta"
+    secondaryLabel="Ir a Admisiones"
+    secondaryHref="/admisiones"
+  />
+</MainLayout>
