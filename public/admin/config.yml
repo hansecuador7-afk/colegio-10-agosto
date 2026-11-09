@@ -63,7 +63,9 @@ collections:
     identifier_field: title
     summary: "{{title}} — {{cargo}}"
     sortable_fields: ["area", "title"]
-    media_folder: "public/assets/estructura"
+    # La ruta de media_folder de una colección es relativa a su carpeta.
+    # Desde src/content/estructura, ../../../ llega a la raíz del proyecto.
+    media_folder: "../../../public/assets/estructura"
     public_folder: "/assets/estructura"
     fields:
       - label: Área
