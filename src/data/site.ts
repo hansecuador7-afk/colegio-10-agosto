@@ -8,6 +8,7 @@ export const site = {
   years: 63,
   facebook: 'https://www.facebook.com/UEF10deagosto/',
   tiktok: 'https://www.tiktok.com/@uef.10.de.agosto?_r=1&_t=ZS-9BDwFHCX3qP',
+  instagram: 'https://www.instagram.com/uef10deagosto?mdxt=OXgxejZ6MHdyYjJy&utm_source=qr',
 } as const;
 
 export const navigation = [

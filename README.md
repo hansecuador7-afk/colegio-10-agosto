@@ -13,7 +13,7 @@ El sitio está construido con **Astro**, **Tailwind CSS** y **Decap CMS**. Es es
 - **Matrícula y Pensiones:** estado del periodo de matrículas, los 7 requisitos y los costos de matrícula y pensión para Inicial a 10mo y Bachillerato. Todo el contenido se edita desde un único archivo en Decap CMS.
 - **Eventos:** agenda administrable desde Decap CMS y páginas de detalle.
 - **Galería:** 35 fotografías con filtros por categoría y visor ampliado.
-- **Redes oficiales:** únicamente Facebook y TikTok. El sitio no incluye WhatsApp.
+- **Redes oficiales:** Facebook, TikTok e Instagram. El sitio no incluye WhatsApp.
 
 ## Requisitos
 
@@ -129,7 +129,7 @@ node .\node_modules\astro\bin\astro.mjs preview
 
 ### Datos institucionales y redes sociales
 
-Edita `src/data/site.ts`. Allí están el nombre, lema, años de trayectoria, ubicación, descripción y enlaces de Facebook y TikTok.
+Edita `src/data/site.ts`. Allí están el nombre, lema, años de trayectoria, ubicación, descripción y enlaces de Facebook, TikTok e Instagram.
 
 ### Fotografías
 
@@ -228,7 +228,7 @@ Si el sitio se aloja fuera de Netlify, será necesario cambiar el backend de Dec
 - Confirmar los valores de matrícula y pensiones antes de publicarlos.
 - Cargar los perfiles reales de la estructura organizacional con fotografías autorizadas.
 - Reemplazar los eventos de ejemplo por la agenda oficial.
-- Revisar los enlaces de Facebook y TikTok.
+- Revisar los enlaces de Facebook, TikTok e Instagram.
 - Reemplazar o completar las fotografías con material autorizado por la institución.
 - Configurar el dominio definitivo en Netlify.
 

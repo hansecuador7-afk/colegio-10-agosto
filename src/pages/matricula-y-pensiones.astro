@@ -101,6 +101,10 @@ const formatUSD = (value: number) => `$${value.toFixed(2)}`;
               <Icon name="tiktok" class="h-4 w-4" />
               Seguir en TikTok
             </a>
+            <a href={site.instagram} target="_blank" rel="noopener noreferrer" class="btn btn-secondary !px-5 !py-2.5 text-xs">
+              <Icon name="instagram" class="h-4 w-4" />
+              Seguir en Instagram
+            </a>
             <a href="#valores" class="group inline-flex items-center gap-2 px-2 py-2.5 text-xs font-extrabold text-brand-700 transition hover:text-brand-900">
               Ver valores
               <Icon name="chevron-down" class="h-4 w-4 transition-transform group-hover:translate-y-0.5" />
@@ -310,6 +314,22 @@ const formatUSD = (value: number) => `$${value.toFixed(2)}`;
             <span class="min-w-0 flex-1">
               <span class="block text-[9px] font-extrabold uppercase tracking-[0.14em] text-stone-400">TikTok oficial</span>
               <span class="mt-0.5 block text-sm font-extrabold text-stone-800">@uef.10.de.agosto</span>
+            </span>
+            <Icon name="arrow-up-right" class="h-4 w-4 text-stone-300 transition group-hover:text-brand-600" />
+          </a>
+
+          <a
+            href={site.instagram}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="group flex items-center gap-4 rounded-2xl border border-stone-200 bg-white p-4 transition hover:border-brand-200 hover:bg-brand-50"
+          >
+            <span class="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-amber-400 via-pink-600 to-purple-700 text-white">
+              <Icon name="instagram" class="h-5 w-5" />
+            </span>
+            <span class="min-w-0 flex-1">
+              <span class="block text-[9px] font-extrabold uppercase tracking-[0.14em] text-stone-400">Instagram oficial</span>
+              <span class="mt-0.5 block text-sm font-extrabold text-stone-800">@uef10deagosto</span>
             </span>
             <Icon name="arrow-up-right" class="h-4 w-4 text-stone-300 transition group-hover:text-brand-600" />
           </a>
