@@ -1,4 +1,4 @@
-export const CARGOS_ESTRUCTURA = [
+export const AREAS_ESTRUCTURA = [
   'Rectorado',
   'Vicerrectorado',
   'Inspección',
@@ -7,10 +7,10 @@ export const CARGOS_ESTRUCTURA = [
   'Consejo Estudiantil',
 ] as const;
 
-export type CargoEstructura = (typeof CARGOS_ESTRUCTURA)[number];
+export type AreaEstructura = (typeof AREAS_ESTRUCTURA)[number];
 
-export const cargoInfo: Record<
-  CargoEstructura,
+export const areaInfo: Record<
+  AreaEstructura,
   { description: string; icon: string }
 > = {
   Rectorado: {

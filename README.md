@@ -2,7 +2,7 @@
 
 Sitio web institucional de la **Unidad Educativa Fiscomisional 10 de Agosto**, de San Lorenzo, Esmeraldas, Ecuador. Su lema es **“Siempre sembrando”**.
 
-El sitio está construido con **Astro**, **Tailwind CSS** y **Decap CMS**. Es estático, responsive y está organizado en páginas independientes: Inicio, Nosotros, Estructura organizacional, Oferta académica, Admisiones, Pensiones, Eventos y Galería.
+El sitio está construido con **Astro**, **Tailwind CSS** y **Decap CMS**. Es estático, responsive y está organizado en páginas independientes: Inicio, Nosotros, Estructura organizacional, Oferta académica, Matrícula y Pensiones, Eventos y Galería.
 
 ## Contenido del sitio
 
@@ -10,8 +10,7 @@ El sitio está construido con **Astro**, **Tailwind CSS** y **Decap CMS**. Es es
 - **Nosotros:** historia, misión, visión y pilares institucionales.
 - **Estructura organizacional:** perfiles agrupados por Rectorado, Vicerrectorado, Inspección, DECE, Docentes y Consejo Estudiantil, administrables desde Decap CMS.
 - **Oferta académica:** Educación Inicial, Preparatoria, Básica Elemental, Media, Superior, Bachillerato en Ciencias y Bachillerato Técnico en Informática (con pasantías en el último año).
-- **Admisiones:** aviso del estado del periodo de matrículas y los 7 requisitos. El aviso se edita desde Decap CMS.
-- **Pensiones:** costos de matrícula y pensión para Inicial a 10mo y Bachillerato, editables desde Decap CMS.
+- **Matrícula y Pensiones:** estado del periodo de matrículas, los 7 requisitos y los costos de matrícula y pensión para Inicial a 10mo y Bachillerato. Todo el contenido se edita desde un único archivo en Decap CMS.
 - **Eventos:** agenda administrable desde Decap CMS y páginas de detalle.
 - **Galería:** 35 fotografías con filtros por categoría y visor ampliado.
 - **Redes oficiales:** únicamente Facebook y TikTok. El sitio no incluye WhatsApp.
@@ -99,11 +98,10 @@ node .\node_modules\astro\bin\astro.mjs preview
 │   ├── content/
 │   │   ├── eventos/            # Eventos en Markdown
 │   │   ├── estructura/         # Perfiles de la estructura organizacional
-│   │   └── paginas/            # Admisiones y Pensiones editables
-│   │       ├── admisiones.md
-│   │       └── pensiones.md
+│   │   └── paginas/            # Contenido editable de Matrícula y Pensiones
+│   │       └── matricula-y-pensiones.md
 │   ├── data/
-│   │   ├── estructura.ts       # Cargos, descripciones e iconos
+│   │   ├── estructura.ts       # Áreas, descripciones e iconos
 │   │   ├── photos.ts           # Metadatos de las 35 fotografías
 │   │   └── site.ts             # Datos institucionales, redes y navegación
 │   ├── layouts/MainLayout.astro
@@ -115,8 +113,7 @@ node .\node_modules\astro\bin\astro.mjs preview
 │   │   ├── nosotros.astro
 │   │   ├── estructura-organizacional.astro
 │   │   ├── oferta.astro
-│   │   ├── admisiones.astro
-│   │   ├── pensiones.astro
+│   │   ├── matricula-y-pensiones.astro
 │   │   ├── eventos.astro
 │   │   ├── eventos/[slug].astro
 │   │   ├── galeria.astro
@@ -124,7 +121,7 @@ node .\node_modules\astro\bin\astro.mjs preview
 │   ├── styles/global.css       # Tema, componentes y animaciones
 │   └── content.config.ts       # Esquemas de todas las colecciones
 ├── astro.config.mjs
-├── netlify.toml
+├── netlify.toml                # Build, cabeceras y redirecciones 301
 └── package.json
 ```
 
@@ -165,22 +162,26 @@ Las imágenes que se suben desde Decap se guardan en `public/assets/eventos/`.
 
 Los perfiles se administran desde **Decap CMS** o editando archivos Markdown en `src/content/estructura/`. Cada registro tiene:
 
-- `nombre`: nombre y apellido.
-- `cargo`: Rectorado, Vicerrectorado, Inspección, DECE, Docentes o Consejo Estudiantil.
-- `foto`: ruta de la fotografía, por ejemplo `/assets/estructura/nombre.jpg`.
+- `area`: Rectorado, Vicerrectorado, Inspección, DECE, Docentes o Consejo Estudiantil. Determina el grupo en el que aparece el perfil.
+- `title`: nombre y apellido.
+- `cargo`: puesto exacto en texto libre. Ejemplos: `Rector`, `Psicólogo Clínico`, `Profesor de Matemáticas`.
+- `image`: ruta de la fotografía, por ejemplo `/assets/estructura/nombre.jpg`.
 
-La página `/estructura-organizacional` agrupa automáticamente los registros por cargo. Las fotos subidas desde el panel se guardan en `public/assets/estructura/`.
+La página `/estructura-organizacional` agrupa automáticamente los registros por `area` y muestra el `cargo` específico en cada tarjeta. Las fotos subidas desde el panel se guardan en `public/assets/estructura/`.
 
 La colección se entrega sin perfiles cargados para no inventar información institucional. Agrega los integrantes reales desde `/admin/`; hasta entonces, la página muestra un aviso de actualización.
 
-### Admisiones y pensiones
+### Matrícula y Pensiones
 
-Los avisos de admisiones y los valores de matrícula y pensiones son archivos editables desde **Decap CMS**:
+Todo el contenido de esta sección se edita desde **Decap CMS** en un único archivo:
 
-- `src/content/paginas/admisiones.md`: estado del periodo, aviso superior y mensaje.
-- `src/content/paginas/pensiones.md`: título, introducción, matrícula y pensión de Inicial a 10mo y Bachillerato, y nota de pago.
+- `src/content/paginas/matricula-y-pensiones.md`: estado del proceso, aviso superior, mensaje, título, introducción, matrícula y pensión de Inicial a 10mo y Bachillerato, y nota de pago.
 
-El aviso superior del sitio y la página `/admisiones` leen el mismo contenido, por lo que el estado se actualiza en ambos lugares al cambiar `estado` y `aviso` en el panel.
+Los valores actuales son: Inicial a 10mo, matrícula **$12.42** y pensión **$19.87**; Bachillerato, matrícula **$16.56** y pensión **$26.50**. La nota de pago indica que estos valores se cancelan los primeros días de cada mes.
+
+La página `/matricula-y-pensiones` muestra juntos el estado del proceso, los requisitos, los costos y los canales oficiales. El aviso superior del sitio lee el mismo archivo, por lo que el estado se actualiza en ambos lugares al cambiar `estado` y `aviso` en el panel.
+
+Las rutas anteriores `/admisiones` y `/pensiones` se eliminaron y redirigen con estado **301** a `/matricula-y-pensiones` mediante `netlify.toml`.
 
 ## Panel de administración con Decap CMS
 

@@ -1,10 +1,10 @@
 ---
 import Icon from './Icon.astro';
-import { getAdmisionesData } from '../lib/paginas';
+import { getMatriculaYPensionesData } from '../lib/paginas';
 import { navigation, site } from '../data/site';
 
-const admisiones = await getAdmisionesData();
-const matriculasAbiertas = admisiones.estado === 'abiertas';
+const info = await getMatriculaYPensionesData();
+const matriculasAbiertas = info.estado === 'abiertas';
 const currentPath = Astro.url.pathname.replace(/\/+$/, '') || '/';
 
 const isActive = (href: string) => {
@@ -111,9 +111,9 @@ const isActive = (href: string) => {
             ]}
           ></span>
         </span>
-        {admisiones.aviso}
+        {info.aviso}
       </p>
-      <a href="/admisiones" class="group inline-flex items-center gap-1.5 font-extrabold text-brand-800 underline decoration-brand-300 decoration-2 underline-offset-4 transition hover:text-brand-950">
+      <a href="/matricula-y-pensiones" class="group inline-flex items-center gap-1.5 font-extrabold text-brand-800 underline decoration-brand-300 decoration-2 underline-offset-4 transition hover:text-brand-950">
         Ver detalles
         <Icon name="arrow-right" class="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" />
       </a>

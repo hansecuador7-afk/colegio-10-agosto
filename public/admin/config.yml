@@ -60,18 +60,14 @@ collections:
     slug: "{{slug}}"
     extension: "md"
     format: frontmatter
-    identifier_field: nombre
-    summary: "{{nombre}} — {{cargo}}"
-    sortable_fields: ["cargo", "nombre"]
+    identifier_field: title
+    summary: "{{title}} — {{cargo}}"
+    sortable_fields: ["area", "title"]
     media_folder: "public/assets/estructura"
     public_folder: "/assets/estructura"
     fields:
-      - label: Nombre
-        name: nombre
-        widget: string
-        hint: "Escribe el nombre y apellido de la persona."
-      - label: Cargo
-        name: cargo
+      - label: Área
+        name: area
         widget: select
         options:
           - label: Rectorado
@@ -86,22 +82,30 @@ collections:
             value: Docentes
           - label: Consejo Estudiantil
             value: Consejo Estudiantil
-        hint: "Selecciona el área a la que pertenece el perfil."
+        hint: "Selecciona el área a la que pertenece el perfil. La página agrupa los perfiles por este campo."
+      - label: Nombre y apellido
+        name: title
+        widget: string
+        hint: "Escribe el nombre y apellido de la persona."
+      - label: Cargo
+        name: cargo
+        widget: string
+        hint: "Escribe el puesto exacto. Ejemplos: Rector, Psicólogo Clínico, Profesor de Matemáticas."
       - label: Foto
-        name: foto
+        name: image
         widget: image
         choose_url: false
         hint: "Sube una fotografía vertical o cuadrada. Se guardará en /public/assets/estructura/."
 
   - name: paginas
     label: Páginas editables
-    description: "Modifica los avisos de admisiones y la información de pensiones sin editar código."
+    description: "Modifica el estado del proceso y la información de matrícula y pensiones sin editar código."
     files:
-      - name: admisiones
-        label: Admisiones
-        file: "src/content/paginas/admisiones.md"
+      - name: matricula-y-pensiones
+        label: Matrícula y Pensiones
+        file: "src/content/paginas/matricula-y-pensiones.md"
         fields:
-          - label: Estado del periodo
+          - label: Estado del proceso
             name: estado
             widget: select
             options:
@@ -109,20 +113,15 @@ collections:
                 value: abiertas
               - label: Matrículas cerradas
                 value: cerradas
-            hint: "Controla la etiqueta de estado y el color del aviso principal."
+            hint: "Controla la etiqueta de estado, el color del aviso y el mensaje del encabezado."
           - label: Aviso principal
             name: aviso
             widget: string
-            hint: "Se muestra en el aviso superior del sitio y como título del estado en la página de Admisiones."
+            hint: "Se muestra en el aviso superior del sitio y como título del estado en la página de Matrícula y Pensiones."
           - label: Mensaje
             name: mensaje
             widget: text
             hint: "Explica el estado del periodo de matrículas y la información que debe conocer la comunidad."
-
-      - name: pensiones
-        label: Pensiones
-        file: "src/content/paginas/pensiones.md"
-        fields:
           - label: Título de la página
             name: titulo
             widget: string
@@ -162,4 +161,4 @@ collections:
           - label: Nota de pago
             name: nota_pago
             widget: text
-            hint: "Información sobre cuándo deben cancelarse los valores."
+            hint: "Información sobre cuándo deben cancelarse los valores de matrícula y pensión."

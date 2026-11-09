@@ -6,16 +6,16 @@ import PageHero from '../components/PageHero.astro';
 import SectionHeading from '../components/SectionHeading.astro';
 import Icon from '../components/Icon.astro';
 import CtaBand from '../components/CtaBand.astro';
-import { CARGOS_ESTRUCTURA, cargoInfo } from '../data/estructura';
+import { AREAS_ESTRUCTURA, areaInfo } from '../data/estructura';
 
 const integrantes = await getCollection('estructura');
 
-const grupos = CARGOS_ESTRUCTURA.map((cargo) => ({
-  cargo,
-  ...cargoInfo[cargo],
+const grupos = AREAS_ESTRUCTURA.map((area) => ({
+  area,
+  ...areaInfo[area],
   personas: integrantes
-    .filter((integrante) => integrante.data.cargo === cargo)
-    .sort((a, b) => a.data.nombre.localeCompare(b.data.nombre, 'es')),
+    .filter((integrante) => integrante.data.area === area)
+    .sort((a, b) => a.data.title.localeCompare(b.data.title, 'es')),
 }));
 
 const gruposConIntegrantes = grupos.filter((grupo) => grupo.personas.length > 0);
@@ -59,7 +59,7 @@ const gruposConIntegrantes = grupos.filter((grupo) => grupo.personas.length > 0)
                   {String(index + 1).padStart(2, '0')}
                 </span>
               </div>
-              <h2 class="mt-6 text-xl leading-tight">{grupo.cargo}</h2>
+              <h2 class="mt-6 text-xl leading-tight">{grupo.area}</h2>
               <p class="mt-2 text-sm leading-relaxed text-stone-500">{grupo.description}</p>
               {
                 grupo.personas.length > 0 && (
@@ -76,7 +76,7 @@ const gruposConIntegrantes = grupos.filter((grupo) => grupo.personas.length > 0)
     </div>
   </section>
 
-  <!-- Integrantes -->
+  <!-- Integrantes agrupados por área -->
   {
     gruposConIntegrantes.length > 0 ? (
       <section class="bg-cream py-16 sm:py-20 lg:py-24">
@@ -84,7 +84,7 @@ const gruposConIntegrantes = grupos.filter((grupo) => grupo.personas.length > 0)
           <SectionHeading
             eyebrow="Nuestro equipo"
             title="Las personas detrás de cada área"
-            description="Conoce a quienes acompañan la vida institucional desde sus distintas responsabilidades."
+            description="Conoce a quienes acompañan la vida institucional desde sus distintas responsabilidades y cargos."
           />
 
           <div class="mt-12 space-y-14 sm:space-y-16">
@@ -97,7 +97,7 @@ const gruposConIntegrantes = grupos.filter((grupo) => grupo.personas.length > 0)
                     </span>
                     <div>
                       <p class="text-[10px] font-extrabold uppercase tracking-[0.16em] text-brand-700">Área</p>
-                      <h2 class="mt-1 text-2xl sm:text-3xl">{grupo.cargo}</h2>
+                      <h2 class="mt-1 text-2xl sm:text-3xl">{grupo.area}</h2>
                     </div>
                   </div>
                   <p class="text-[10px] font-extrabold uppercase tracking-[0.14em] text-stone-400">
@@ -114,18 +114,18 @@ const gruposConIntegrantes = grupos.filter((grupo) => grupo.personas.length > 0)
                     >
                       <div class="photo-frame aspect-[4/5] bg-stone-100">
                         <img
-                          src={integrante.data.foto}
-                          alt={`Fotografía de ${integrante.data.nombre}, ${integrante.data.cargo}`}
+                          src={integrante.data.image}
+                          alt={`Fotografía de ${integrante.data.title}, ${integrante.data.cargo}`}
                           loading="lazy"
                           decoding="async"
                           class="h-full w-full object-cover"
                         />
                       </div>
                       <div class="p-5">
-                        <p class="text-[9px] font-extrabold uppercase tracking-[0.14em] text-brand-700">
+                        <p class="text-[9px] font-extrabold uppercase leading-relaxed tracking-[0.14em] text-brand-700">
                           {integrante.data.cargo}
                         </p>
-                        <h3 class="mt-2 text-lg leading-tight">{integrante.data.nombre}</h3>
+                        <h3 class="mt-2 text-lg leading-tight">{integrante.data.title}</h3>
                       </div>
                     </article>
                   ))}
@@ -154,10 +154,10 @@ const gruposConIntegrantes = grupos.filter((grupo) => grupo.personas.length > 0)
 
   <CtaBand
     title="Una estructura al servicio de la formación."
-    description="Conoce las etapas educativas y la información de matrícula y pensiones de nuestra institución."
+    description="Conoce las etapas educativas y toda la información de matrícula y pensiones de nuestra institución."
     primaryLabel="Ver oferta académica"
     primaryHref="/oferta"
-    secondaryLabel="Consultar pensiones"
-    secondaryHref="/pensiones"
+    secondaryLabel="Matrícula y pensiones"
+    secondaryHref="/matricula-y-pensiones"
   />
 </MainLayout>

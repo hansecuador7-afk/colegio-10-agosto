@@ -5,6 +5,31 @@
 [build.environment]
   NODE_VERSION = "24"
 
+# Las páginas de Admisiones y Pensiones se unificaron en una sola ruta.
+[[redirects]]
+  from = "/admisiones"
+  to = "/matricula-y-pensiones"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/admisiones/"
+  to = "/matricula-y-pensiones"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/pensiones"
+  to = "/matricula-y-pensiones"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/pensiones/"
+  to = "/matricula-y-pensiones"
+  status = 301
+  force = true
+
 [[headers]]
   for = "/admin/*"
   [headers.values]

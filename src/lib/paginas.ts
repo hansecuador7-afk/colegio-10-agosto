@@ -1,20 +1,12 @@
 import { getCollection } from 'astro:content';
 
-export async function getAdmisionesData() {
-  const [entry] = await getCollection('admisiones');
+export async function getMatriculaYPensionesData() {
+  const [entry] = await getCollection('matriculaYPensiones');
 
   if (!entry) {
-    throw new Error('No se encontró el contenido editable de la página de admisiones.');
-  }
-
-  return entry.data;
-}
-
-export async function getPensionesData() {
-  const [entry] = await getCollection('pensiones');
-
-  if (!entry) {
-    throw new Error('No se encontró el contenido editable de la página de pensiones.');
+    throw new Error(
+      'No se encontró el contenido editable de la página de matrícula y pensiones.',
+    );
   }
 
   return entry.data;

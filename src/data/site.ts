@@ -15,8 +15,7 @@ export const navigation = [
   { label: 'Nosotros', href: '/nosotros' },
   { label: 'Estructura', href: '/estructura-organizacional' },
   { label: 'Oferta académica', href: '/oferta' },
-  { label: 'Admisiones', href: '/admisiones' },
-  { label: 'Pensiones', href: '/pensiones' },
+  { label: 'Matrícula y Pensiones', href: '/matricula-y-pensiones' },
   { label: 'Eventos', href: '/eventos' },
   { label: 'Galería', href: '/galeria' },
 ] as const;

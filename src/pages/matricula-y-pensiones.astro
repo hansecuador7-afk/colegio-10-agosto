@@ -4,58 +4,61 @@ import PageHero from '../components/PageHero.astro';
 import SectionHeading from '../components/SectionHeading.astro';
 import Icon from '../components/Icon.astro';
 import CtaBand from '../components/CtaBand.astro';
-import { getAdmisionesData } from '../lib/paginas';
+import { getMatriculaYPensionesData } from '../lib/paginas';
 import { site } from '../data/site';
 
-const admisiones = await getAdmisionesData();
-const estaAbierta = admisiones.estado === 'abiertas';
+const info = await getMatriculaYPensionesData();
+const estaAbierta = info.estado === 'abiertas';
 
-const requirements = [
+const niveles = [
   {
-    text: 'Certificado de promoción (desde 5to en adelante).',
-    tag: null,
+    title: 'Inicial a 10mo',
+    description: 'Educación Inicial, Preparatoria y Educación General Básica hasta décimo.',
+    matricula: info.matricula_inicial,
+    pension: info.pension_inicial,
+    icon: 'school',
   },
   {
-    text: '2 copias de cédula del estudiante y representante legal (a color).',
-    tag: null,
-  },
-  {
-    text: '2 carpetas colgantes de cualquier color.',
-    tag: 'Solo estudiantes nuevos',
-  },
-  {
-    text: '1 carpeta de cartón con vincha.',
-    tag: 'Solo estudiantes nuevos',
-  },
-  {
-    text: '5 fotos tamaño carnet.',
-    tag: null,
-  },
-  {
-    text: '1 separador de documentos.',
-    tag: null,
-  },
-  {
-    text: 'Valores cancelados (matrícula, 2 meses de pensión y libros).',
-    tag: null,
+    title: 'Bachillerato',
+    description: 'Bachillerato en Ciencias y Bachillerato Técnico en Informática.',
+    matricula: info.matricula_bachillerato,
+    pension: info.pension_bachillerato,
+    icon: 'graduation-cap',
   },
 ];
+
+const requirements = [
+  'Certificado de promoción (desde 5to en adelante).',
+  '2 copias de cédula del estudiante y representante legal (a color).',
+  '2 carpetas colgantes de cualquier color.',
+  '1 carpeta de cartón con vincha.',
+  '5 fotos tamaño carnet.',
+  '1 separador de documentos.',
+  'Valores cancelados (matrícula, 2 meses de pensión y libros).',
+];
+
+const requirementsNewStudents = new Set([
+  '2 carpetas colgantes de cualquier color.',
+  '1 carpeta de cartón con vincha.',
+]);
+
+const formatUSD = (value: number) => `$${value.toFixed(2)}`;
 ---
 
 <MainLayout
-  title="Admisiones"
-  description={`${admisiones.aviso} Consulta los requisitos y canales oficiales de la Unidad Educativa Fiscomisional 10 de Agosto.`}
+  title="Matrícula y Pensiones"
+  description={`${info.aviso} Consulta los requisitos y los costos de matrícula y pensión de la Unidad Educativa Fiscomisional 10 de Agosto.`}
 >
   <PageHero
-    eyebrow="Admisiones"
-    breadcrumb="Admisiones"
-    title="Información para tu matrícula"
-    description="Consulta el estado actual del proceso y los requisitos que deberás presentar."
+    eyebrow="Matrícula y Pensiones"
+    breadcrumb="Matrícula y Pensiones"
+    title={info.titulo}
+    description={info.introduccion}
     image="/assets/fotos/IMG_5060.jpg"
     imageAlt="Estudiantes y docentes reunidos en el patio del colegio"
   />
 
-  <!-- Estado actual, editado desde Decap CMS -->
+  <!-- Estado del proceso, editado desde Decap CMS -->
   <section class="relative overflow-hidden bg-sun-100">
     <div class="absolute inset-0 bg-dot-grid opacity-40" aria-hidden="true"></div>
     <div class="container-site relative py-10 sm:py-14">
@@ -86,12 +89,8 @@ const requirements = [
             <span class="text-[10px] font-extrabold uppercase tracking-[0.14em] text-stone-400">Estado actual</span>
           </div>
 
-          <h2 class="mt-4 max-w-3xl text-2xl leading-tight sm:text-3xl">
-            {admisiones.aviso}
-          </h2>
-          <p class="mt-3 max-w-2xl text-sm leading-relaxed text-stone-600 sm:text-base">
-            {admisiones.mensaje}
-          </p>
+          <h2 class="mt-4 max-w-3xl text-2xl leading-tight sm:text-3xl">{info.aviso}</h2>
+          <p class="mt-3 max-w-2xl text-sm leading-relaxed text-stone-600 sm:text-base">{info.mensaje}</p>
 
           <div class="mt-6 flex flex-wrap gap-2.5">
             <a href={site.facebook} target="_blank" rel="noopener noreferrer" class="btn btn-primary !px-5 !py-2.5 text-xs">
@@ -101,6 +100,10 @@ const requirements = [
             <a href={site.tiktok} target="_blank" rel="noopener noreferrer" class="btn btn-secondary !px-5 !py-2.5 text-xs">
               <Icon name="tiktok" class="h-4 w-4" />
               Seguir en TikTok
+            </a>
+            <a href="#valores" class="group inline-flex items-center gap-2 px-2 py-2.5 text-xs font-extrabold text-brand-700 transition hover:text-brand-900">
+              Ver valores
+              <Icon name="chevron-down" class="h-4 w-4 transition-transform group-hover:translate-y-0.5" />
             </a>
             <a href="#requisitos" class="group inline-flex items-center gap-2 px-2 py-2.5 text-xs font-extrabold text-brand-700 transition hover:text-brand-900">
               Ver requisitos
@@ -132,8 +135,82 @@ const requirements = [
     </div>
   </section>
 
+  <!-- Costos de matrícula y pensión -->
+  <section id="valores" class="scroll-mt-40 bg-white py-16 sm:py-20 lg:py-24">
+    <div class="container-site">
+      <SectionHeading
+        eyebrow="Valores"
+        title="Costos de matrícula y pensión"
+        description="Los valores se organizan según el nivel educativo. Consulta el detalle correspondiente antes de realizar tu pago."
+      />
+
+      <div class="mt-10 grid gap-5 lg:grid-cols-2">
+        {
+          niveles.map((nivel, index) => (
+            <article
+              class="relative overflow-hidden rounded-[2rem] border border-stone-200 bg-white p-7 shadow-sm shadow-stone-900/5 transition duration-300 hover:border-brand-200 hover:shadow-lg sm:p-9"
+              data-reveal
+              style={`--reveal-delay: ${index * 90}ms`}
+            >
+              <div
+                class:list={[
+                  'absolute inset-x-0 top-0 h-1.5',
+                  index === 0 ? 'bg-sun-400' : 'bg-brand-700',
+                ]}
+                aria-hidden="true"
+              />
+
+              <div class="flex items-start justify-between gap-4">
+                <span class="flex h-14 w-14 items-center justify-center rounded-2xl bg-brand-50 text-brand-700">
+                  <Icon name={nivel.icon} class="h-6 w-6" />
+                </span>
+                <span class="rounded-full border border-stone-200 bg-stone-50 px-3 py-1.5 text-[9px] font-extrabold uppercase tracking-[0.14em] text-stone-500">
+                  Nivel educativo
+                </span>
+              </div>
+
+              <h2 class="mt-6 text-2xl sm:text-3xl">{nivel.title}</h2>
+              <p class="mt-2 max-w-md text-sm leading-relaxed text-stone-500">{nivel.description}</p>
+
+              <dl class="mt-7 divide-y divide-stone-200 border-y border-stone-200">
+                <div class="flex items-end justify-between gap-4 py-5">
+                  <div>
+                    <dt class="text-sm font-extrabold text-stone-800">Matrícula</dt>
+                    <p class="mt-1 text-[11px] text-stone-400">Valor correspondiente al nivel</p>
+                  </div>
+                  <dd class="font-display text-3xl font-semibold leading-none text-brand-700">
+                    {formatUSD(nivel.matricula)}
+                  </dd>
+                </div>
+                <div class="flex items-end justify-between gap-4 py-5">
+                  <div>
+                    <dt class="text-sm font-extrabold text-stone-800">Pensión mensual</dt>
+                    <p class="mt-1 text-[11px] text-stone-400">Pago correspondiente a cada mes</p>
+                  </div>
+                  <dd class="font-display text-3xl font-semibold leading-none text-brand-700">
+                    {formatUSD(nivel.pension)}
+                  </dd>
+                </div>
+              </dl>
+            </article>
+          ))
+        }
+      </div>
+
+      <div class="mt-6 flex flex-col gap-4 rounded-3xl border border-sun-200 bg-sun-50 p-6 sm:flex-row sm:items-start sm:p-7" data-reveal>
+        <span class="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-sun-400 text-brand-950">
+          <Icon name="info" class="h-5 w-5" />
+        </span>
+        <div>
+          <h2 class="text-lg text-stone-900">Información importante</h2>
+          <p class="mt-2 text-sm leading-relaxed text-stone-600">{info.nota_pago}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- Requisitos -->
-  <section id="requisitos" class="scroll-mt-40 bg-white py-16 sm:py-20 lg:py-24">
+  <section id="requisitos" class="scroll-mt-40 bg-cream py-16 sm:py-20 lg:py-24">
     <div class="container-site">
       <SectionHeading
         eyebrow="Documentación"
@@ -155,12 +232,12 @@ const requirements = [
                 {String(index + 1).padStart(2, '0')}
               </span>
               <div class="min-w-0">
-                <p class="text-sm font-bold leading-relaxed text-stone-800 sm:text-[15px]">{requirement.text}</p>
+                <p class="text-sm font-bold leading-relaxed text-stone-800 sm:text-[15px]">{requirement}</p>
                 {
-                  requirement.tag && (
+                  requirementsNewStudents.has(requirement) && (
                     <span class="mt-2.5 inline-flex items-center gap-1.5 rounded-full bg-sun-100 px-2.5 py-1 text-[9px] font-extrabold uppercase tracking-[0.1em] text-sun-800">
                       <Icon name="info" class="h-3 w-3" />
-                      {requirement.tag}
+                      Solo estudiantes nuevos
                     </span>
                   )
                 }
@@ -177,7 +254,7 @@ const requirements = [
         </span>
         <p class="text-sm leading-relaxed text-stone-600">
           Los requisitos marcados como <strong class="font-extrabold text-stone-800">“Solo estudiantes nuevos”</strong> no aplican a quienes ya forman parte de la institución. Si tienes dudas, consulta nuestros canales oficiales antes de entregar documentación.
-          <a href="/pensiones" class="ml-1 font-extrabold text-brand-700 underline decoration-brand-300 underline-offset-4 transition hover:text-brand-900">
+          <a href="#valores" class="ml-1 font-extrabold text-brand-700 underline decoration-brand-300 underline-offset-4 transition hover:text-brand-900">
             Consulta los valores de matrícula y pensiones.
           </a>
         </p>
@@ -186,9 +263,9 @@ const requirements = [
   </section>
 
   <!-- Canales oficiales -->
-  <section class="bg-cream py-16 sm:py-20">
+  <section class="bg-white py-16 sm:py-20">
     <div class="container-site">
-      <div class="grid gap-8 rounded-[2rem] border border-stone-200 bg-white p-7 shadow-sm shadow-stone-900/5 sm:p-10 lg:grid-cols-[1.15fr_0.85fr] lg:items-center">
+      <div class="grid gap-8 rounded-[2rem] border border-stone-200 bg-cream p-7 shadow-sm shadow-stone-900/5 sm:p-10 lg:grid-cols-[1.15fr_0.85fr] lg:items-center">
         <div data-reveal>
           <span class="eyebrow">
             <span class="h-1.5 w-1.5 rounded-full bg-brand-600" aria-hidden="true"></span>
@@ -242,11 +319,11 @@ const requirements = [
   </section>
 
   <CtaBand
-    title="Consulta los valores de matrícula y pensiones."
-    description="Revisa la información de pagos y conoce las etapas académicas que ofrece nuestra institución."
-    primaryLabel="Ver pensiones"
-    primaryHref="/pensiones"
-    secondaryLabel="Ver oferta académica"
-    secondaryHref="/oferta"
+    title="Conoce las etapas académicas que acompañamos."
+    description="Desde Educación Inicial hasta el Bachillerato, descubre la propuesta formativa de nuestra institución."
+    primaryLabel="Ver oferta académica"
+    primaryHref="/oferta"
+    secondaryLabel="Ver estructura organizacional"
+    secondaryHref="/estructura-organizacional"
   />
 </MainLayout>
