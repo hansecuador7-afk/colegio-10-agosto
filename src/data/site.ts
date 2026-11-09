@@ -13,8 +13,10 @@ export const site = {
 export const navigation = [
   { label: 'Inicio', href: '/' },
   { label: 'Nosotros', href: '/nosotros' },
+  { label: 'Estructura', href: '/estructura-organizacional' },
   { label: 'Oferta académica', href: '/oferta' },
   { label: 'Admisiones', href: '/admisiones' },
+  { label: 'Pensiones', href: '/pensiones' },
   { label: 'Eventos', href: '/eventos' },
   { label: 'Galería', href: '/galeria' },
 ] as const;

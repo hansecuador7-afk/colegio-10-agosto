@@ -2,14 +2,16 @@
 
 Sitio web institucional de la **Unidad Educativa Fiscomisional 10 de Agosto**, de San Lorenzo, Esmeraldas, Ecuador. Su lema es **“Siempre sembrando”**.
 
-El sitio está construido con **Astro**, **Tailwind CSS** y **Decap CMS**. Es estático, responsive y está organizado en páginas independientes: Inicio, Nosotros, Oferta académica, Admisiones, Eventos y Galería.
+El sitio está construido con **Astro**, **Tailwind CSS** y **Decap CMS**. Es estático, responsive y está organizado en páginas independientes: Inicio, Nosotros, Estructura organizacional, Oferta académica, Admisiones, Pensiones, Eventos y Galería.
 
 ## Contenido del sitio
 
 - **Inicio:** presentación, accesos a las secciones, carrusel de fotografías y próximos eventos.
 - **Nosotros:** historia, misión, visión y pilares institucionales.
+- **Estructura organizacional:** perfiles agrupados por Rectorado, Vicerrectorado, Inspección, DECE, Docentes y Consejo Estudiantil, administrables desde Decap CMS.
 - **Oferta académica:** Educación Inicial, Preparatoria, Básica Elemental, Media, Superior, Bachillerato en Ciencias y Bachillerato Técnico en Informática (con pasantías en el último año).
-- **Admisiones:** aviso de matrículas cerradas y los 7 requisitos para cuando se habilite el proceso.
+- **Admisiones:** aviso del estado del periodo de matrículas y los 7 requisitos. El aviso se edita desde Decap CMS.
+- **Pensiones:** costos de matrícula y pensión para Inicial a 10mo y Bachillerato, editables desde Decap CMS.
 - **Eventos:** agenda administrable desde Decap CMS y páginas de detalle.
 - **Galería:** 35 fotografías con filtros por categoría y visor ampliado.
 - **Redes oficiales:** únicamente Facebook y TikTok. El sitio no incluye WhatsApp.
@@ -84,32 +86,43 @@ node .\node_modules\astro\bin\astro.mjs preview
 ├── public/
 │   ├── admin/
 │   │   ├── index.html          # Panel de Decap CMS
-│   │   └── config.yml          # Configuración del panel y de la colección Eventos
+│   │   └── config.yml          # Configuración del panel y de las colecciones
 │   └── assets/
 │       ├── logo.png            # Escudo institucional
 │       ├── marco.jpg           # Fotografía principal de portada
 │       ├── og-cover.jpg        # Imagen para compartir en redes
+│       ├── estructura/         # Fotografías de la estructura organizacional
 │       ├── eventos/            # Imágenes de los eventos
 │       └── fotos/              # 35 fotografías de la galería y sus miniaturas
 ├── src/
 │   ├── components/             # Encabezado, pie, carrusel, galería, tarjetas, iconos…
-│   ├── content/eventos/        # Eventos en Markdown (administrados por Decap)
+│   ├── content/
+│   │   ├── eventos/            # Eventos en Markdown
+│   │   ├── estructura/         # Perfiles de la estructura organizacional
+│   │   └── paginas/            # Admisiones y Pensiones editables
+│   │       ├── admisiones.md
+│   │       └── pensiones.md
 │   ├── data/
-│   │   ├── site.ts             # Datos institucionales, redes y navegación
-│   │   └── photos.ts           # Metadatos de las 35 fotografías
+│   │   ├── estructura.ts       # Cargos, descripciones e iconos
+│   │   ├── photos.ts           # Metadatos de las 35 fotografías
+│   │   └── site.ts             # Datos institucionales, redes y navegación
 │   ├── layouts/MainLayout.astro
-│   ├── lib/eventos.ts          # Fechas, orden y rutas de eventos
+│   ├── lib/
+│   │   ├── eventos.ts          # Fechas, orden y rutas de eventos
+│   │   └── paginas.ts          # Lectura de las páginas editables
 │   ├── pages/
 │   │   ├── index.astro
 │   │   ├── nosotros.astro
+│   │   ├── estructura-organizacional.astro
 │   │   ├── oferta.astro
 │   │   ├── admisiones.astro
+│   │   ├── pensiones.astro
 │   │   ├── eventos.astro
 │   │   ├── eventos/[slug].astro
 │   │   ├── galeria.astro
 │   │   └── 404.astro
 │   ├── styles/global.css       # Tema, componentes y animaciones
-│   └── content.config.ts       # Esquema de la colección Eventos
+│   └── content.config.ts       # Esquemas de todas las colecciones
 ├── astro.config.mjs
 ├── netlify.toml
 └── package.json
@@ -148,6 +161,27 @@ Las imágenes que se suben desde Decap se guardan en `public/assets/eventos/`.
 
 > **Importante:** los cuatro eventos incluidos actualmente son ejemplos de demostración. Deben revisarse, actualizarse o eliminarse antes de publicar el sitio. No deben presentarse como una agenda oficial hasta que la institución confirme las fechas.
 
+### Estructura organizacional
+
+Los perfiles se administran desde **Decap CMS** o editando archivos Markdown en `src/content/estructura/`. Cada registro tiene:
+
+- `nombre`: nombre y apellido.
+- `cargo`: Rectorado, Vicerrectorado, Inspección, DECE, Docentes o Consejo Estudiantil.
+- `foto`: ruta de la fotografía, por ejemplo `/assets/estructura/nombre.jpg`.
+
+La página `/estructura-organizacional` agrupa automáticamente los registros por cargo. Las fotos subidas desde el panel se guardan en `public/assets/estructura/`.
+
+La colección se entrega sin perfiles cargados para no inventar información institucional. Agrega los integrantes reales desde `/admin/`; hasta entonces, la página muestra un aviso de actualización.
+
+### Admisiones y pensiones
+
+Los avisos de admisiones y los valores de matrícula y pensiones son archivos editables desde **Decap CMS**:
+
+- `src/content/paginas/admisiones.md`: estado del periodo, aviso superior y mensaje.
+- `src/content/paginas/pensiones.md`: título, introducción, matrícula y pensión de Inicial a 10mo y Bachillerato, y nota de pago.
+
+El aviso superior del sitio y la página `/admisiones` leen el mismo contenido, por lo que el estado se actualiza en ambos lugares al cambiar `estado` y `aviso` en el panel.
+
 ## Panel de administración con Decap CMS
 
 El panel está en:
@@ -180,7 +214,7 @@ La configuración de Decap usa `git-gateway` y la rama `main`. Para habilitar la
    - Directorio de publicación: `dist`
 4. En el panel de Netlify del sitio, entra en **Site configuration → Identity** y habilita **Identity**.
 5. En **Identity → Services**, habilita **Git Gateway**.
-6. En **Identity**, invita a las personas que administrarán los eventos.
+6. En **Identity**, invita a las personas que administrarán los eventos, la estructura organizacional y las páginas editables.
 7. Ingresa a `https://TU-DOMINIO.netlify.app/admin/` e inicia sesión con la invitación.
 
 Si el sitio se aloja fuera de Netlify, será necesario cambiar el backend de Decap (por ejemplo, a GitHub con OAuth) y ajustar la autenticación.
@@ -188,8 +222,10 @@ Si el sitio se aloja fuera de Netlify, será necesario cambiar el backend de Dec
 ## Antes de publicar
 
 - Revisar y actualizar el texto de misión y visión si la institución los modifica.
-- Verificar que el aviso de matrículas cerradas siga vigente.
+- Verificar el estado del periodo de matrículas en Decap CMS y actualizar el aviso si cambia.
 - Confirmar los requisitos de admisión.
+- Confirmar los valores de matrícula y pensiones antes de publicarlos.
+- Cargar los perfiles reales de la estructura organizacional con fotografías autorizadas.
 - Reemplazar los eventos de ejemplo por la agenda oficial.
 - Revisar los enlaces de Facebook y TikTok.
 - Reemplazar o completar las fotografías con material autorizado por la institución.
@@ -200,4 +236,4 @@ Si el sitio se aloja fuera de Netlify, será necesario cambiar el backend de Dec
 - **Fotografías y escudo:** material proporcionado por la institución.
 - **Tipografías:** Manrope y Fraunces, mediante Fontsource.
 - **Sitio:** Astro + Tailwind CSS.
-- **Gestión de eventos:** Decap CMS.
+- **Gestión de contenido:** Decap CMS.

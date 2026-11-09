@@ -4,17 +4,17 @@
   --font-sans: "Manrope Variable", "Manrope", ui-sans-serif, system-ui, sans-serif;
   --font-display: "Fraunces Variable", "Fraunces", Georgia, Cambria, serif;
 
-  --color-brand-50: #fff1f2;
-  --color-brand-100: #ffe1e4;
-  --color-brand-200: #ffc6cc;
-  --color-brand-300: #ff9aa5;
-  --color-brand-400: #f65f70;
-  --color-brand-500: #e52d44;
-  --color-brand-600: #c8102e;
-  --color-brand-700: #a70d25;
-  --color-brand-800: #871022;
-  --color-brand-900: #711224;
-  --color-brand-950: #40050f;
+  --color-brand-50: #fef2f2;
+  --color-brand-100: #fee2e2;
+  --color-brand-200: #fecaca;
+  --color-brand-300: #fca5a5;
+  --color-brand-400: #f87171;
+  --color-brand-500: #ef4444;
+  --color-brand-600: #e60000;
+  --color-brand-700: #d32f2f;
+  --color-brand-800: #b91c1c;
+  --color-brand-900: #991b1b;
+  --color-brand-950: #4c0c0c;
 
   --color-sun-50: #fffbeb;
   --color-sun-100: #fff7d1;

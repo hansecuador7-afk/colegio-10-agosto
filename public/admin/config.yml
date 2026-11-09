@@ -7,7 +7,7 @@ backend:
 # y luego abrir http://localhost:4321/admin/
 local_backend: true
 
-# Las imágenes que se suban desde el panel se guardan en public/assets/eventos
+# Las imágenes que se suban desde el panel de eventos se guardan en public/assets/eventos
 # y se guardan en el contenido con la ruta pública /assets/eventos/...
 media_folder: "public/assets/eventos"
 public_folder: "/assets/eventos"
@@ -49,3 +49,117 @@ collections:
         name: description
         widget: text
         hint: "Describe la actividad, sus participantes y la información importante."
+
+  - name: estructura
+    label: Estructura Organizacional
+    label_singular: Integrante
+    description: "Administra los perfiles que forman parte de la estructura organizacional de la institución."
+    folder: "src/content/estructura"
+    create: true
+    delete: true
+    slug: "{{slug}}"
+    extension: "md"
+    format: frontmatter
+    identifier_field: nombre
+    summary: "{{nombre}} — {{cargo}}"
+    sortable_fields: ["cargo", "nombre"]
+    media_folder: "public/assets/estructura"
+    public_folder: "/assets/estructura"
+    fields:
+      - label: Nombre
+        name: nombre
+        widget: string
+        hint: "Escribe el nombre y apellido de la persona."
+      - label: Cargo
+        name: cargo
+        widget: select
+        options:
+          - label: Rectorado
+            value: Rectorado
+          - label: Vicerrectorado
+            value: Vicerrectorado
+          - label: Inspección
+            value: Inspección
+          - label: DECE
+            value: DECE
+          - label: Docentes
+            value: Docentes
+          - label: Consejo Estudiantil
+            value: Consejo Estudiantil
+        hint: "Selecciona el área a la que pertenece el perfil."
+      - label: Foto
+        name: foto
+        widget: image
+        choose_url: false
+        hint: "Sube una fotografía vertical o cuadrada. Se guardará en /public/assets/estructura/."
+
+  - name: paginas
+    label: Páginas editables
+    description: "Modifica los avisos de admisiones y la información de pensiones sin editar código."
+    files:
+      - name: admisiones
+        label: Admisiones
+        file: "src/content/paginas/admisiones.md"
+        fields:
+          - label: Estado del periodo
+            name: estado
+            widget: select
+            options:
+              - label: Matrículas abiertas
+                value: abiertas
+              - label: Matrículas cerradas
+                value: cerradas
+            hint: "Controla la etiqueta de estado y el color del aviso principal."
+          - label: Aviso principal
+            name: aviso
+            widget: string
+            hint: "Se muestra en el aviso superior del sitio y como título del estado en la página de Admisiones."
+          - label: Mensaje
+            name: mensaje
+            widget: text
+            hint: "Explica el estado del periodo de matrículas y la información que debe conocer la comunidad."
+
+      - name: pensiones
+        label: Pensiones
+        file: "src/content/paginas/pensiones.md"
+        fields:
+          - label: Título de la página
+            name: titulo
+            widget: string
+            hint: "Título principal que se muestra en la cabecera de la página."
+          - label: Introducción
+            name: introduccion
+            widget: text
+            hint: "Texto breve que acompaña el título de la página."
+          - label: Matrícula — Inicial a 10mo
+            name: matricula_inicial
+            widget: number
+            value_type: float
+            min: 0
+            step: 0.01
+            hint: "Valor en dólares estadounidenses. Ejemplo: 12.42"
+          - label: Pensión — Inicial a 10mo
+            name: pension_inicial
+            widget: number
+            value_type: float
+            min: 0
+            step: 0.01
+            hint: "Valor mensual en dólares estadounidenses. Ejemplo: 19.87"
+          - label: Matrícula — Bachillerato
+            name: matricula_bachillerato
+            widget: number
+            value_type: float
+            min: 0
+            step: 0.01
+            hint: "Valor en dólares estadounidenses. Ejemplo: 16.56"
+          - label: Pensión — Bachillerato
+            name: pension_bachillerato
+            widget: number
+            value_type: float
+            min: 0
+            step: 0.01
+            hint: "Valor mensual en dólares estadounidenses. Ejemplo: 26.50"
+          - label: Nota de pago
+            name: nota_pago
+            widget: text
+            hint: "Información sobre cuándo deben cancelarse los valores."

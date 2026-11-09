@@ -1,7 +1,10 @@
 ---
 import Icon from './Icon.astro';
+import { getAdmisionesData } from '../lib/paginas';
 import { navigation, site } from '../data/site';
 
+const admisiones = await getAdmisionesData();
+const matriculasAbiertas = admisiones.estado === 'abiertas';
 const currentPath = Astro.url.pathname.replace(/\/+$/, '') || '/';
 
 const isActive = (href: string) => {
@@ -95,10 +98,20 @@ const isActive = (href: string) => {
     <div class="container-site flex flex-wrap items-center justify-between gap-x-4 gap-y-1 py-2.5 text-[11px] sm:text-xs">
       <p class="flex items-center gap-2 font-bold text-stone-700">
         <span class="relative flex h-2 w-2 shrink-0">
-          <span class="absolute inline-flex h-full w-full rounded-full bg-brand-500"></span>
-          <span class="relative inline-flex h-2 w-2 rounded-full bg-brand-600"></span>
+          <span
+            class:list={[
+              'absolute inline-flex h-full w-full rounded-full',
+              matriculasAbiertas ? 'bg-emerald-400' : 'bg-brand-400',
+            ]}
+          ></span>
+          <span
+            class:list={[
+              'relative inline-flex h-2 w-2 rounded-full',
+              matriculasAbiertas ? 'bg-emerald-600' : 'bg-brand-600',
+            ]}
+          ></span>
         </span>
-        Actualmente no estamos en periodo de matrículas.
+        {admisiones.aviso}
       </p>
       <a href="/admisiones" class="group inline-flex items-center gap-1.5 font-extrabold text-brand-800 underline decoration-brand-300 decoration-2 underline-offset-4 transition hover:text-brand-950">
         Ver detalles

@@ -1,0 +1,163 @@
+---
+import { getCollection } from 'astro:content';
+
+import MainLayout from '../layouts/MainLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import SectionHeading from '../components/SectionHeading.astro';
+import Icon from '../components/Icon.astro';
+import CtaBand from '../components/CtaBand.astro';
+import { CARGOS_ESTRUCTURA, cargoInfo } from '../data/estructura';
+
+const integrantes = await getCollection('estructura');
+
+const grupos = CARGOS_ESTRUCTURA.map((cargo) => ({
+  cargo,
+  ...cargoInfo[cargo],
+  personas: integrantes
+    .filter((integrante) => integrante.data.cargo === cargo)
+    .sort((a, b) => a.data.nombre.localeCompare(b.data.nombre, 'es')),
+}));
+
+const gruposConIntegrantes = grupos.filter((grupo) => grupo.personas.length > 0);
+---
+
+<MainLayout
+  title="Estructura organizacional"
+  description="Conoce la estructura organizacional de la Unidad Educativa Fiscomisional 10 de Agosto: Rectorado, Vicerrectorado, Inspección, DECE, Docentes y Consejo Estudiantil."
+>
+  <PageHero
+    eyebrow="Estructura organizacional"
+    breadcrumb="Estructura organizacional"
+    title="Áreas que trabajan por una misma comunidad"
+    description="Nuestra organización permite acompañar a las y los estudiantes desde la dirección, la gestión académica, el bienestar y la participación estudiantil."
+    image="/assets/fotos/IMG_5044.jpg"
+    imageAlt="Docentes con vestimenta institucional en el patio del colegio"
+  />
+
+  <!-- Áreas de la estructura -->
+  <section class="bg-white py-16 sm:py-20 lg:py-24">
+    <div class="container-site">
+      <SectionHeading
+        eyebrow="Cómo nos organizamos"
+        title="Un equipo en diálogo con toda la comunidad"
+        description="Cada área cumple una función específica para sostener la formación integral, la convivencia y el bienestar de quienes forman parte de la institución."
+      />
+
+      <div class="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        {
+          grupos.map((grupo, index) => (
+            <article
+              class="group relative overflow-hidden rounded-3xl border border-stone-200 bg-white p-6 shadow-sm shadow-stone-900/5 transition duration-300 hover:-translate-y-1 hover:border-brand-200 hover:shadow-lg sm:p-7"
+              data-reveal
+              style={`--reveal-delay: ${(index % 3) * 70}ms`}
+            >
+              <div class="flex items-start justify-between gap-4">
+                <span class="flex h-12 w-12 items-center justify-center rounded-2xl bg-brand-50 text-brand-700 transition duration-300 group-hover:bg-brand-700 group-hover:text-white">
+                  <Icon name={grupo.icon} class="h-5 w-5" />
+                </span>
+                <span class="text-[10px] font-extrabold uppercase tracking-[0.16em] text-stone-300">
+                  {String(index + 1).padStart(2, '0')}
+                </span>
+              </div>
+              <h2 class="mt-6 text-xl leading-tight">{grupo.cargo}</h2>
+              <p class="mt-2 text-sm leading-relaxed text-stone-500">{grupo.description}</p>
+              {
+                grupo.personas.length > 0 && (
+                  <p class="mt-5 inline-flex items-center gap-2 rounded-full border border-stone-200 bg-stone-50 px-3 py-1.5 text-[9px] font-extrabold uppercase tracking-[0.12em] text-stone-500">
+                    <Icon name="users" class="h-3.5 w-3.5 text-brand-600" />
+                    {grupo.personas.length} {grupo.personas.length === 1 ? 'integrante' : 'integrantes'}
+                  </p>
+                )
+              }
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- Integrantes -->
+  {
+    gruposConIntegrantes.length > 0 ? (
+      <section class="bg-cream py-16 sm:py-20 lg:py-24">
+        <div class="container-site">
+          <SectionHeading
+            eyebrow="Nuestro equipo"
+            title="Las personas detrás de cada área"
+            description="Conoce a quienes acompañan la vida institucional desde sus distintas responsabilidades."
+          />
+
+          <div class="mt-12 space-y-14 sm:space-y-16">
+            {gruposConIntegrantes.map((grupo) => (
+              <section>
+                <div class="flex flex-col gap-3 border-b border-stone-200 pb-5 sm:flex-row sm:items-end sm:justify-between">
+                  <div class="flex items-center gap-4">
+                    <span class="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-brand-700 text-white">
+                      <Icon name={grupo.icon} class="h-5 w-5" />
+                    </span>
+                    <div>
+                      <p class="text-[10px] font-extrabold uppercase tracking-[0.16em] text-brand-700">Área</p>
+                      <h2 class="mt-1 text-2xl sm:text-3xl">{grupo.cargo}</h2>
+                    </div>
+                  </div>
+                  <p class="text-[10px] font-extrabold uppercase tracking-[0.14em] text-stone-400">
+                    {grupo.personas.length} {grupo.personas.length === 1 ? 'integrante' : 'integrantes'}
+                  </p>
+                </div>
+
+                <div class="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+                  {grupo.personas.map((integrante, index) => (
+                    <article
+                      class="group overflow-hidden rounded-3xl border border-stone-200 bg-white shadow-sm shadow-stone-900/5 transition duration-300 hover:-translate-y-1 hover:border-brand-200 hover:shadow-lg"
+                      data-reveal
+                      style={`--reveal-delay: ${(index % 4) * 60}ms`}
+                    >
+                      <div class="photo-frame aspect-[4/5] bg-stone-100">
+                        <img
+                          src={integrante.data.foto}
+                          alt={`Fotografía de ${integrante.data.nombre}, ${integrante.data.cargo}`}
+                          loading="lazy"
+                          decoding="async"
+                          class="h-full w-full object-cover"
+                        />
+                      </div>
+                      <div class="p-5">
+                        <p class="text-[9px] font-extrabold uppercase tracking-[0.14em] text-brand-700">
+                          {integrante.data.cargo}
+                        </p>
+                        <h3 class="mt-2 text-lg leading-tight">{integrante.data.nombre}</h3>
+                      </div>
+                    </article>
+                  ))}
+                </div>
+              </section>
+            ))}
+          </div>
+        </div>
+      </section>
+    ) : (
+      <section class="bg-cream py-16 sm:py-20">
+        <div class="container-site">
+          <div class="mx-auto max-w-2xl rounded-[2rem] border border-dashed border-stone-300 bg-white p-8 text-center shadow-sm shadow-stone-900/5 sm:p-10" data-reveal>
+            <span class="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-brand-50 text-brand-700">
+              <Icon name="users" class="h-7 w-7" />
+            </span>
+            <h2 class="mt-5 text-2xl">Estamos actualizando nuestros perfiles</h2>
+            <p class="mx-auto mt-3 max-w-lg text-sm leading-relaxed text-stone-500">
+              Muy pronto publicaremos aquí a las personas que integran las distintas áreas de nuestra estructura organizacional.
+            </p>
+          </div>
+        </div>
+      </section>
+    )
+  }
+
+  <CtaBand
+    title="Una estructura al servicio de la formación."
+    description="Conoce las etapas educativas y la información de matrícula y pensiones de nuestra institución."
+    primaryLabel="Ver oferta académica"
+    primaryHref="/oferta"
+    secondaryLabel="Consultar pensiones"
+    secondaryHref="/pensiones"
+  />
+</MainLayout>

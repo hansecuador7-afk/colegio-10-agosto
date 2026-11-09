@@ -1,0 +1,178 @@
+---
+import MainLayout from '../layouts/MainLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import SectionHeading from '../components/SectionHeading.astro';
+import Icon from '../components/Icon.astro';
+import CtaBand from '../components/CtaBand.astro';
+import { getPensionesData } from '../lib/paginas';
+import { site } from '../data/site';
+
+const pensiones = await getPensionesData();
+
+const niveles = [
+  {
+    title: 'Inicial a 10mo',
+    description: 'Educación Inicial, Preparatoria y Educación General Básica hasta décimo.',
+    matricula: pensiones.matricula_inicial,
+    pension: pensiones.pension_inicial,
+    icon: 'school',
+  },
+  {
+    title: 'Bachillerato',
+    description: 'Bachillerato en Ciencias y Bachillerato Técnico en Informática.',
+    matricula: pensiones.matricula_bachillerato,
+    pension: pensiones.pension_bachillerato,
+    icon: 'graduation-cap',
+  },
+];
+
+const formatUSD = (value: number) => `$${value.toFixed(2)}`;
+---
+
+<MainLayout
+  title="Pensiones"
+  description={`${pensiones.titulo}: consulta los valores de matrícula y pensión de la Unidad Educativa Fiscomisional 10 de Agosto.`}
+>
+  <PageHero
+    eyebrow="Pensiones"
+    breadcrumb="Pensiones"
+    title={pensiones.titulo}
+    description={pensiones.introduccion}
+    image="/assets/fotos/IMG_5046.jpg"
+    imageAlt="Estudiantes y docentes reunidos dentro de un aula"
+  />
+
+  <section class="bg-white py-16 sm:py-20 lg:py-24">
+    <div class="container-site">
+      <SectionHeading
+        eyebrow="Valores"
+        title="Costos de matrícula y pensión"
+        description="Los valores se organizan según el nivel educativo. Consulta el detalle correspondiente antes de realizar tu pago."
+      />
+
+      <div class="mt-10 grid gap-5 lg:grid-cols-2">
+        {
+          niveles.map((nivel, index) => (
+            <article
+              class="relative overflow-hidden rounded-[2rem] border border-stone-200 bg-white p-7 shadow-sm shadow-stone-900/5 transition duration-300 hover:border-brand-200 hover:shadow-lg sm:p-9"
+              data-reveal
+              style={`--reveal-delay: ${index * 90}ms`}
+            >
+              <div class:list={[
+                'absolute inset-x-0 top-0 h-1.5',
+                index === 0 ? 'bg-sun-400' : 'bg-brand-700',
+              ]} aria-hidden="true"></div>
+
+              <div class="flex items-start justify-between gap-4">
+                <span class="flex h-14 w-14 items-center justify-center rounded-2xl bg-brand-50 text-brand-700">
+                  <Icon name={nivel.icon} class="h-6 w-6" />
+                </span>
+                <span class="rounded-full border border-stone-200 bg-stone-50 px-3 py-1.5 text-[9px] font-extrabold uppercase tracking-[0.14em] text-stone-500">
+                  Nivel educativo
+                </span>
+              </div>
+
+              <h2 class="mt-6 text-2xl sm:text-3xl">{nivel.title}</h2>
+              <p class="mt-2 max-w-md text-sm leading-relaxed text-stone-500">{nivel.description}</p>
+
+              <dl class="mt-7 divide-y divide-stone-200 border-y border-stone-200">
+                <div class="flex items-end justify-between gap-4 py-5">
+                  <div>
+                    <dt class="text-sm font-extrabold text-stone-800">Matrícula</dt>
+                    <p class="mt-1 text-[11px] text-stone-400">Valor correspondiente al nivel</p>
+                  </div>
+                  <dd class="font-display text-3xl font-semibold leading-none text-brand-700">
+                    {formatUSD(nivel.matricula)}
+                  </dd>
+                </div>
+                <div class="flex items-end justify-between gap-4 py-5">
+                  <div>
+                    <dt class="text-sm font-extrabold text-stone-800">Pensión mensual</dt>
+                    <p class="mt-1 text-[11px] text-stone-400">Pago correspondiente a cada mes</p>
+                  </div>
+                  <dd class="font-display text-3xl font-semibold leading-none text-brand-700">
+                    {formatUSD(nivel.pension)}
+                  </dd>
+                </div>
+              </dl>
+            </article>
+          ))
+        }
+      </div>
+
+      <div class="mt-6 flex flex-col gap-4 rounded-3xl border border-sun-200 bg-sun-50 p-6 sm:flex-row sm:items-start sm:p-7" data-reveal>
+        <span class="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-sun-400 text-brand-950">
+          <Icon name="info" class="h-5 w-5" />
+        </span>
+        <div>
+          <h2 class="text-lg text-stone-900">Información importante</h2>
+          <p class="mt-2 text-sm leading-relaxed text-stone-600">{pensiones.nota_pago}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-cream py-16 sm:py-20">
+    <div class="container-site">
+      <div class="grid gap-8 rounded-[2rem] border border-stone-200 bg-white p-7 shadow-sm shadow-stone-900/5 sm:p-10 lg:grid-cols-[1.15fr_0.85fr] lg:items-center">
+        <div data-reveal>
+          <span class="eyebrow">
+            <span class="h-1.5 w-1.5 rounded-full bg-brand-600" aria-hidden="true"></span>
+            Canales oficiales
+          </span>
+          <h2 class="mt-5 text-3xl leading-tight sm:text-4xl">¿Tienes dudas sobre los pagos?</h2>
+          <p class="mt-4 max-w-xl text-sm leading-relaxed text-stone-500 sm:text-base">
+            Consulta nuestros canales oficiales para recibir información verificada sobre matrículas, pensiones y requisitos. No utilizamos WhatsApp.
+          </p>
+          <a href="/admisiones" class="group mt-6 inline-flex items-center gap-2 text-sm font-extrabold text-brand-700 transition hover:text-brand-900">
+            Consultar el proceso de admisiones
+            <Icon name="arrow-right" class="h-4 w-4 transition-transform group-hover:translate-x-1" />
+          </a>
+        </div>
+
+        <div class="grid gap-3" data-reveal style="--reveal-delay: 100ms">
+          <a
+            href={site.facebook}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="group flex items-center gap-4 rounded-2xl border border-stone-200 bg-white p-4 transition hover:border-brand-200 hover:bg-brand-50"
+          >
+            <span class="flex h-12 w-12 items-center justify-center rounded-xl bg-brand-700 text-white">
+              <Icon name="facebook" class="h-5 w-5" />
+            </span>
+            <span class="min-w-0 flex-1">
+              <span class="block text-[9px] font-extrabold uppercase tracking-[0.14em] text-stone-400">Facebook oficial</span>
+              <span class="mt-0.5 block text-sm font-extrabold text-stone-800">UEF 10 de Agosto</span>
+            </span>
+            <Icon name="arrow-up-right" class="h-4 w-4 text-stone-300 transition group-hover:text-brand-600" />
+          </a>
+
+          <a
+            href={site.tiktok}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="group flex items-center gap-4 rounded-2xl border border-stone-200 bg-white p-4 transition hover:border-brand-200 hover:bg-brand-50"
+          >
+            <span class="flex h-12 w-12 items-center justify-center rounded-xl bg-stone-900 text-white">
+              <Icon name="tiktok" class="h-5 w-5" />
+            </span>
+            <span class="min-w-0 flex-1">
+              <span class="block text-[9px] font-extrabold uppercase tracking-[0.14em] text-stone-400">TikTok oficial</span>
+              <span class="mt-0.5 block text-sm font-extrabold text-stone-800">@uef.10.de.agosto</span>
+            </span>
+            <Icon name="arrow-up-right" class="h-4 w-4 text-stone-300 transition group-hover:text-brand-600" />
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <CtaBand
+    title="Conoce las etapas académicas que acompañamos."
+    description="Desde Educación Inicial hasta el Bachillerato, descubre la propuesta formativa de nuestra institución."
+    primaryLabel="Ver oferta académica"
+    primaryHref="/oferta"
+    secondaryLabel="Ir a Admisiones"
+    secondaryHref="/admisiones"
+  />
+</MainLayout>
