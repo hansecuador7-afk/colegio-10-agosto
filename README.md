@@ -8,7 +8,7 @@ El sitio está construido con **Astro**, **Tailwind CSS** y **Decap CMS**. Es es
 
 - **Inicio:** presentación, accesos a las secciones, carrusel de fotografías y próximos eventos.
 - **Nosotros:** historia, misión, visión y pilares institucionales.
-- **Estructura organizacional:** perfiles agrupados por Rectorado, Vicerrectorado, Inspección, DECE, Docentes y Consejo Estudiantil, administrables desde Decap CMS.
+- **Estructura organizacional:** perfiles agrupados por Rectorado, Vicerrectorado, Inspección, DECE, Docentes, Equipo de Comunicación y Consejo Estudiantil, administrables desde Decap CMS.
 - **Oferta académica:** Educación Inicial, Preparatoria, Básica Elemental, Media, Superior, Bachillerato en Ciencias y Bachillerato Técnico en Informática (con pasantías en el último año).
 - **Matrícula y Pensiones:** estado del periodo de matrículas, los 7 requisitos y los costos de matrícula y pensión para Inicial a 10mo y Bachillerato. Todo el contenido se edita desde un único archivo en Decap CMS.
 - **Eventos:** agenda administrable desde Decap CMS y páginas de detalle.
@@ -162,7 +162,7 @@ Las imágenes que se suben desde Decap se guardan en `public/assets/eventos/`.
 
 Los perfiles se administran desde **Decap CMS** o editando archivos Markdown en `src/content/estructura/`. Cada registro tiene:
 
-- `area`: Rectorado, Vicerrectorado, Inspección, DECE, Docentes o Consejo Estudiantil. Determina el grupo en el que aparece el perfil.
+- `area`: Rectorado, Vicerrectorado, Inspección, DECE, Docentes, Equipo de Comunicación o Consejo Estudiantil. Determina el grupo en el que aparece el perfil.
 - `title`: nombre y apellido.
 - `cargo`: puesto exacto en texto libre. Ejemplos: `Rector`, `Psicólogo Clínico`, `Profesor de Matemáticas`.
 - `image`: ruta de la fotografía, por ejemplo `/assets/estructura/nombre.jpg`.

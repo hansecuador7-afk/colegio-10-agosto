@@ -82,6 +82,8 @@ collections:
             value: DECE
           - label: Docentes
             value: Docentes
+          - label: Equipo de Comunicación
+            value: Equipo de Comunicación
           - label: Consejo Estudiantil
             value: Consejo Estudiantil
         hint: "Selecciona el área a la que pertenece el perfil. La página agrupa los perfiles por este campo."

@@ -4,6 +4,7 @@ export const AREAS_ESTRUCTURA = [
   'Inspección',
   'DECE',
   'Docentes',
+  'Equipo de Comunicación',
   'Consejo Estudiantil',
 ] as const;
 
@@ -32,6 +33,10 @@ export const areaInfo: Record<
   Docentes: {
     description: 'El equipo que impulsa el aprendizaje en cada etapa.',
     icon: 'users',
+  },
+  'Equipo de Comunicación': {
+    description: 'Comunicación institucional, redes sociales y difusión de actividades.',
+    icon: 'megaphone',
   },
   'Consejo Estudiantil': {
     description: 'La voz y la participación de nuestras y nuestros estudiantes.',
