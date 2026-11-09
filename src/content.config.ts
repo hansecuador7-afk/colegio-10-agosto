@@ -2,6 +2,7 @@ import { defineCollection } from 'astro:content';
 import { z } from 'astro/zod';
 import { glob } from 'astro/loaders';
 
+import { PUESTOS_CUADRO_HONOR } from './data/cuadroHonor';
 import { AREAS_ESTRUCTURA } from './data/estructura';
 
 const eventos = defineCollection({
@@ -21,6 +22,16 @@ const estructura = defineCollection({
     title: z.string().min(3, 'El nombre debe tener al menos 3 caracteres.'),
     cargo: z.string().min(3, 'El cargo debe tener al menos 3 caracteres.'),
     image: z.string().min(1, 'La fotografía es obligatoria.'),
+  }),
+});
+
+const cuadroHonor = defineCollection({
+  loader: glob({ pattern: '**/*.md', base: './src/content/cuadro-honor' }),
+  schema: z.object({
+    nombre: z.string().min(3, 'El nombre debe tener al menos 3 caracteres.'),
+    foto: z.string().min(1, 'La fotografía es obligatoria.'),
+    puntaje: z.coerce.string().min(1, 'El puntaje es obligatorio.'),
+    puesto: z.enum(PUESTOS_CUADRO_HONOR),
   }),
 });
 
@@ -45,4 +56,4 @@ const matriculaYPensiones = defineCollection({
   }),
 });
 
-export const collections = { eventos, estructura, matriculaYPensiones };
+export const collections = { eventos, estructura, cuadroHonor, matriculaYPensiones };

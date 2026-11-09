@@ -101,6 +101,51 @@ collections:
         choose_url: false
         hint: "Sube una fotografía vertical o cuadrada. Se guardará en /public/assets/estructura/."
 
+  - name: cuadro-honor
+    label: Cuadro de Honor
+    label_singular: Estudiante
+    description: "Administra a las y los estudiantes que conforman el Cuadro de Honor 2026-2027."
+    folder: "src/content/cuadro-honor"
+    create: true
+    delete: true
+    slug: "{{slug}}"
+    extension: "md"
+    format: frontmatter
+    identifier_field: nombre
+    summary: "{{puesto}} — {{nombre}}"
+    sortable_fields: ["puesto", "nombre"]
+    # La ruta de media_folder de una colección es relativa a su carpeta.
+    media_folder: "../../../public/assets/cuadro-honor"
+    public_folder: "/assets/cuadro-honor"
+    fields:
+      - label: Nombre
+        name: nombre
+        widget: string
+        hint: "Escribe el nombre y apellido del estudiante."
+      - label: Foto
+        name: foto
+        widget: image
+        choose_url: false
+        hint: "Sube una fotografía vertical o cuadrada. Se guardará en /public/assets/cuadro-honor/."
+      - label: Puntaje
+        name: puntaje
+        widget: string
+        hint: "Escribe el puntaje obtenido. Ejemplo: 9.85 o 985/1000."
+      - label: Puesto
+        name: puesto
+        widget: select
+        options:
+          - Abanderado del Pabellón Nacional
+          - Portaestandarte del Cantón
+          - Portaestandarte de la Institución
+          - 1.er Escolta del Pabellón Nacional
+          - 2.do Escolta del Pabellón Nacional
+          - 1.er Escolta del Cantón
+          - 2.do Escolta del Cantón
+          - 1.er Escolta de la Institución
+          - 2.do Escolta de la Institución
+        hint: "El sitio agrupa automáticamente al estudiante en la zona y bandera correspondientes."
+
   - name: paginas
     label: Páginas editables
     description: "Modifica el estado del proceso y la información de matrícula y pensiones sin editar código."

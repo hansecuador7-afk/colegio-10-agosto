@@ -8,7 +8,7 @@ El sitio está construido con **Astro**, **Tailwind CSS** y **Decap CMS**. Es es
 
 - **Inicio:** presentación, accesos a las secciones, carrusel de fotografías y próximos eventos.
 - **Nosotros:** historia, misión, visión y pilares institucionales.
-- **Estructura organizacional:** perfiles agrupados por Rectorado, Vicerrectorado, Inspección, DECE, Docentes, Equipo de Comunicación y Consejo Estudiantil, administrables desde Decap CMS.
+- **Estructura organizacional:** perfiles agrupados por Rectorado, Vicerrectorado, Inspección, DECE, Docentes, Equipo de Comunicación y Consejo Estudiantil, administrables desde Decap CMS. Incluye el **Cuadro de Honor 2026-2027**, con los puestos de abanderado, portaestandartes y escoltas organizados por bandera.
 - **Oferta académica:** Educación Inicial, Preparatoria, Básica Elemental, Media, Superior, Bachillerato en Ciencias y Bachillerato Técnico en Informática (con pasantías en el último año).
 - **Matrícula y Pensiones:** estado del periodo de matrículas, los 7 requisitos y los costos de matrícula y pensión para Inicial a 10mo y Bachillerato. Todo el contenido se edita desde un único archivo en Decap CMS.
 - **Eventos:** agenda administrable desde Decap CMS y páginas de detalle.
@@ -90,17 +90,21 @@ node .\node_modules\astro\bin\astro.mjs preview
 │       ├── logo.png            # Escudo institucional
 │       ├── marco.jpg           # Fotografía principal de portada
 │       ├── og-cover.jpg        # Imagen para compartir en redes
+│       ├── banderas/           # Banderas del Ecuador, San Lorenzo e institucional
+│       ├── cuadro-honor/       # Fotografías del Cuadro de Honor
 │       ├── estructura/         # Fotografías de la estructura organizacional
 │       ├── eventos/            # Imágenes de los eventos
 │       └── fotos/              # 35 fotografías de la galería y sus miniaturas
 ├── src/
 │   ├── components/             # Encabezado, pie, carrusel, galería, tarjetas, iconos…
 │   ├── content/
+│   │   ├── cuadro-honor/       # Estudiantes del Cuadro de Honor
 │   │   ├── eventos/            # Eventos en Markdown
 │   │   ├── estructura/         # Perfiles de la estructura organizacional
 │   │   └── paginas/            # Contenido editable de Matrícula y Pensiones
 │   │       └── matricula-y-pensiones.md
 │   ├── data/
+│   │   ├── cuadroHonor.ts      # Puestos, categorías y banderas del Cuadro de Honor
 │   │   ├── estructura.ts       # Áreas, descripciones e iconos
 │   │   ├── photos.ts           # Metadatos de las 35 fotografías
 │   │   └── site.ts             # Datos institucionales, redes y navegación
@@ -170,6 +174,27 @@ Los perfiles se administran desde **Decap CMS** o editando archivos Markdown en 
 La página `/estructura-organizacional` agrupa automáticamente los registros por `area` y muestra el `cargo` específico en cada tarjeta. Las fotos subidas desde el panel se guardan en `public/assets/estructura/`.
 
 La colección se entrega sin perfiles cargados para no inventar información institucional. Agrega los integrantes reales desde `/admin/`; hasta entonces, la página muestra un aviso de actualización.
+
+### Cuadro de Honor 2026-2027
+
+Los estudiantes del Cuadro de Honor se administran desde **Decap CMS > Cuadro de Honor**. Cada registro tiene:
+
+- `nombre`: nombre y apellido del estudiante.
+- `foto`: fotografía subida desde el panel; se guarda en `public/assets/cuadro-honor/`.
+- `puntaje`: puntaje obtenido, en texto libre (por ejemplo `9.85`).
+- `puesto`: una de las nueve opciones de abanderado, portaestandarte o escolta.
+
+La página `/estructura-organizacional` agrupa automáticamente cada registro en una de las tres zonas decoradas con su bandera. Mientras no existan registros, cada zona muestra un aviso de que los estudiantes aún no se han publicado.
+
+- **Pabellón Nacional:** Abanderado del Pabellón Nacional, 1.er Escolta y 2.do Escolta.
+- **Cantón:** Portaestandarte del Cantón, 1.er Escolta y 2.do Escolta.
+- **Institución:** Portaestandarte de la Institución, 1.er Escolta y 2.do Escolta.
+
+Las banderas decorativas deben permanecer en `public/assets/banderas/` con estos nombres:
+
+- `bandera-ecuador.png`
+- `bandera-san-lorenzo.jpg`
+- `bandera-institucion.png`
 
 ### Matrícula y Pensiones
 
